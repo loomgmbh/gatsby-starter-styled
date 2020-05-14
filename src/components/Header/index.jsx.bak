@@ -1,0 +1,102 @@
+import React from 'react'
+import { useStaticQuery, graphql } from 'gatsby'
+import PropTypes from 'prop-types'
+import { Link } from '@components/Link'
+import { Box, Flex, Grid } from '@components/Grid'
+import { Text } from '@components/Text'
+import styled, {
+  space,
+  color,
+  layout,
+  border,
+  background,
+  position,
+  flexbox,
+  propTypes,
+} from '@style'
+import { ReactComponent as Icon } from '../../../static/images/tnt.svg'
+
+const TNT = styled.div`
+  ${space}
+  ${color}
+  ${layout}
+  ${border}
+  ${background}
+  ${position}
+  ${flexbox}
+`
+
+TNT.displayName = `TNT`
+
+TNT.propTypes = {
+  ...propTypes.space,
+  ...propTypes.color,
+  ...propTypes.layout,
+  ...propTypes.border,
+  ...propTypes.background,
+  ...propTypes.position,
+  ...propTypes.flexbox,
+}
+
+const Header = ({ title, description }) => {
+  const data = useStaticQuery(graphql`
+    query HeaderQuery {
+      site {
+        siteMetadata {
+          title
+          description
+        }
+      }
+    }
+  `)
+
+  return (
+    <Grid as="header">
+      <Flex
+        justifyContent="flex-start"
+        // flexDirection="row"
+        background="red"
+        // height={[93]}
+        // alignItems="stretch"
+      >
+        <Box
+          className="header-icon"
+          mr={3}
+          background="pink"
+          width={1 / 8}
+          height="100%"
+        >
+          <Link to="/" height="100%" width="100%" dis>
+            <Icon height={100} width="auto" />
+          </Link>
+        </Box>
+        <Box className="header-text" background="orange" flex={1}>
+          <Link to="/" css={{ textDecoration: 'none' }}>
+            <Text as="h1" mb={1} mt={1}>
+              {title ?? data.site.siteMetadata.title ?? 'Default title'}
+            </Text>
+          </Link>
+        </Box>
+        <Box className="header-description" background="orange" flex={1}>
+          <Text as="h2" mb={3}>
+            {description ??
+              data.site.siteMetadata.description ??
+              'Default description'}
+          </Text>
+        </Box>
+      </Flex>
+    </Grid>
+  )
+}
+
+Header.propTypes = {
+  title: PropTypes.string,
+  description: PropTypes.string,
+}
+
+Header.defaultProps = {
+  title: null,
+  description: null,
+}
+
+export default Header

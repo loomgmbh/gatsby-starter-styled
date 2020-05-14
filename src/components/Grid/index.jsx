@@ -6,6 +6,7 @@
  */
 import Box from './Box'
 import Flex from './Flex'
+import Grid from './Grid'
 import Br from './Br'
 
-export { Box, Flex, Br }
+export { Box, Flex, Br, Grid }

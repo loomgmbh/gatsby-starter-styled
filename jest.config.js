@@ -20,5 +20,7 @@ module.exports = {
     '^@style$': '<rootDir>/src/util/style/',
     '^@components(.*)$': '<rootDir>/src/components/$1',
     '^@test$': '<rootDir>/src/util/test/',
+    '^@config$': '<rootDir>/src/config/',
+    '^@src$': '<rootDir>/src/',
   },
 }

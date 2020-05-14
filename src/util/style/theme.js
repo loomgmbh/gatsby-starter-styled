@@ -76,6 +76,15 @@ const colors = {
   },
 }
 
+const schemes = {
+  base: {
+    base: colors.primary[500],
+    sm: colors.green[600],
+    md: colors.red[500],
+    lg: colors.yellow[500],
+  },
+}
+
 /**
  * Space is used for margin and padding scales.
  * It's recommended to use powers of two to ensure alignment across the entire project
@@ -129,14 +138,23 @@ const letterSpacings = {
  */
 const radii = ['0', '2px', '4px', '8px', '16px']
 
+const variants = {
+  region: {
+    bg: 'pink',
+    p: [1, 2, 3],
+  },
+}
+
 export const theme = {
   name: 'Default',
   breakpoints,
   colors,
+  schemes,
   space,
   fontSizes,
   lineHeights,
   fontWeights,
   letterSpacings,
   radii,
+  variants,
 }

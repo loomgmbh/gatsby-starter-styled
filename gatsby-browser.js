@@ -1,14 +1,18 @@
-/**
- * Implement Gatsby's Browser APIs in this file.
- *
- * See: https://www.gatsbyjs.org/docs/browser-apis/
- */
+/* eslint-disable react/jsx-props-no-spreading */
 const GoogleAnalytics = require('react-ga')
-const website = require('./config/website')
+const React = require('react')
+const website = require('./src/config/website')
+const themeProvider = require('./src/config/ThemeContext').default
+const Wrapper = require('./src/components/Layout').default
 
-/**
- * Initialize Google Analytics
- */
 exports.onClientEntry = () => {
   GoogleAnalytics.initialize(website.googleAnalyticsId)
 }
+
+// eslint-disable-next-line react/prop-types,react/display-name
+exports.wrapPageElement = ({ element, props }) => {
+  // eslint-disable-next-line react/jsx-filename-extension
+  return <Wrapper {...props}>{element}</Wrapper>
+}
+
+exports.wrapRootElement = themeProvider

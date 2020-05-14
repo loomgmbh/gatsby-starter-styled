@@ -1,4 +1,4 @@
-const website = require('./config/website')
+const website = require('./src/config/website')
 
 const pathPrefix = website.pathPrefix === `/` ? `` : website.pathPrefix
 
@@ -17,6 +17,17 @@ module.exports = {
     twitter: website.twitter,
   },
   plugins: [
+    {
+      resolve: 'gatsby-plugin-svgr',
+      options: {
+        prettier: true, // use prettier to format JS code output (default)
+        svgo: true, // use svgo to optimize SVGs (default)
+        svgoConfig: {
+          removeViewBox: true, // remove viewBox when possible (default)
+          cleanupIDs: true, // remove unused IDs and minify remaining IDs (default)
+        },
+      },
+    },
     `gatsby-plugin-react-helmet`,
     {
       resolve: `gatsby-source-filesystem`,
@@ -37,7 +48,7 @@ module.exports = {
     {
       resolve: `gatsby-plugin-typography`,
       options: {
-        pathToConfigModule: `./config/typography.js`,
+        pathToConfigModule: `./src/config/typography.js`,
       },
     },
     {

@@ -1,27 +1,44 @@
 import React from 'react'
-
-import { Link } from '@components/Link'
-import { Layout } from '@components/Layout'
+import { Link, OutboundLink } from '@components/Link'
 import Image from '@components/Image'
 import { SEO } from '@components/SEO'
 import { Text } from '@components/Text'
 import { Box, Br } from '@components/Grid'
+import Layout from '@components/Layout/frontpage'
+import { themeContext } from '../config/ThemeContext'
 
-const IndexPage = () => (
-  <Layout>
-    <SEO />
-    <Text as="h2" mb={3}>
-      Hi people
-    </Text>
-    <Text mb={4}>
-      Welcome to your new Gatsby site. <Br />
-      Now go build something great.
-    </Text>
-    <Box maxWidth="300px" mb={4}>
-      <Image />
-    </Box>
-    <Link to="/page-2/">Go to page 2</Link>
-  </Layout>
-)
+const IndexPage = props => {
+  return (
+    <themeContext.Consumer>
+      {context => (
+        <>
+          <SEO />
+          <Layout>
+            <button onClick={() => context.changeTheme('dark')} type="button">
+              {context.theme}
+            </button>
+            <Text as="h2" mb={3}>
+              Guten Tag : )
+            </Text>
+            <Text mb={4}>
+              Built with: <Br />
+              <OutboundLink to="https://styled-components.com/" from="main">
+                Styled Components
+              </OutboundLink>{' '}
+              /{' '}
+              <OutboundLink to="https://styled-system.com/api/" from="main">
+                Styled-System
+              </OutboundLink>{' '}
+            </Text>
+            <Box maxWidth="300px" mb={4}>
+              <Image />
+            </Box>
+            <Link to="/page-2/">Go to page 2</Link>
+          </Layout>
+        </>
+      )}
+    </themeContext.Consumer>
+  )
+}
 
 export default IndexPage

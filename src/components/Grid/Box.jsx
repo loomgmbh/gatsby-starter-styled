@@ -5,6 +5,7 @@ import styled, {
   border,
   background,
   position,
+  flexbox,
   propTypes,
 } from '@style'
 
@@ -15,6 +16,7 @@ const Box = styled.div`
   ${border}
   ${background}
   ${position}
+  ${flexbox}
 `
 
 Box.displayName = `Box`
@@ -26,6 +28,7 @@ Box.propTypes = {
   ...propTypes.border,
   ...propTypes.background,
   ...propTypes.position,
+  ...propTypes.flexbox,
 }
 
 export default Box
