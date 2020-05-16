@@ -5,11 +5,17 @@ import { SEO } from '@components/SEO'
 import { Text } from '@components/Text'
 import { Box, Br } from '@components/Grid'
 import Layout from '@components/Layout/frontpage'
-import { themeContext } from '../config/ThemeContext'
+// import {
+//   useCookieConsentState,
+//   useCookieConsentDispatch,
+// } from '@src/config/CookieConsent'
+import { ThemeContext } from '../config/Context'
 
 const IndexPage = props => {
+  // const cookieConsentState = useCookieConsentState()
+  // const cookieConsentDispatch = useCookieConsentDispatch()
   return (
-    <themeContext.Consumer>
+    <ThemeContext.Consumer>
       {context => (
         <>
           <SEO />
@@ -37,7 +43,7 @@ const IndexPage = props => {
           </Layout>
         </>
       )}
-    </themeContext.Consumer>
+    </ThemeContext.Consumer>
   )
 }
 

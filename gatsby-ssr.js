@@ -2,7 +2,7 @@
 // const GoogleAnalytics = require('react-ga')
 const React = require('react')
 // const website = require('./config/website')
-const themeProvider = require('./src/config/ThemeContext').default
+const themeProvider = require('./src/config/Context').default
 const Wrapper = require('./src/components/Layout').default
 
 // exports.onClientEntry = () => {

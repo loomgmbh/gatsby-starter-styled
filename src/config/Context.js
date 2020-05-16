@@ -4,20 +4,20 @@
 /* eslint-disable react/jsx-filename-extension */
 import React, { useState } from 'react'
 
-export const themeContext = React.createContext()
+export const ThemeContext = React.createContext()
 
 const Provider = props => {
   const [theme, setTheme] = useState('default')
 
   return (
-    <themeContext.Provider
+    <ThemeContext.Provider
       value={{
         theme,
         changeTheme: themeName => setTheme(themeName),
       }}
     >
       {props.children}
-    </themeContext.Provider>
+    </ThemeContext.Provider>
   )
 }
 
