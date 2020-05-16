@@ -17,8 +17,11 @@ function getCookie() {
   const regex = new RegExp(
     `(?:(?:^|.*;\\s*)${COOKIE_NAME}\\s*\\=\\s*([^;]*).*$)|^.*$`
   )
-  const cookie = document.cookie.replace(regex, '$1')
-  return cookie.length ? JSON.parse(cookie) : undefined
+  if (typeof document !== `undefined`) {
+    const cookie = document.cookie.replace(regex, '$1')
+    return cookie.length ? JSON.parse(cookie) : undefined
+  }
+  return undefined
 }
 
 // Initial value is cookie value OR prefered value but not yet set
