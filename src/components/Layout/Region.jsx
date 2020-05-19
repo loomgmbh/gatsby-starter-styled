@@ -1,24 +1,25 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { theme } from '@style'
 import { Box } from '@components/Grid'
 
-const { schemes } = theme
-
-const Region = ({ children, width, background, id, className, css }) => {
+const Region = ({
+  children,
+  width,
+  background,
+  id,
+  className,
+  css,
+  borderColor,
+}) => {
   return (
     <Box width={width} p={[1, 1, 1]} css={css} className={className} id={id}>
       <Box
         p={[2, 3, 4]}
         border={2}
         borderStyle="solid"
-        borderColor={[
-          `${schemes.base.base}`,
-          `${schemes.base.sm}`,
-          `${schemes.base.md}`,
-          `${schemes.base.lg}`,
-        ]}
+        borderColor={borderColor}
         background={background}
+        className="region-inner"
       >
         {children}
       </Box>
@@ -33,15 +34,17 @@ Region.propTypes = {
   css: PropTypes.oneOfType([PropTypes.object]),
   id: PropTypes.string,
   width: PropTypes.number,
+  borderColor: PropTypes.string,
 }
 
 Region.defaultProps = {
   children: null,
-  className: null,
+  className: 'region',
   background: null,
   css: null,
   id: null,
   width: null,
+  borderColor: null,
 }
 
 export default Region

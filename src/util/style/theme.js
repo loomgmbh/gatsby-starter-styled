@@ -11,6 +11,66 @@ breakpoints.md = breakpoints[1]
 breakpoints.lg = breakpoints[2]
 breakpoints.xl = breakpoints[3]
 
+const breakpointsObj = {
+  sm: '576px',
+  md: '786px',
+  lg: '992px',
+  xl: '1200px',
+}
+
+/**
+ * Space is used for margin and padding scales.
+ * It's recommended to use powers of two to ensure alignment across the entire project
+ */
+const space = [
+  '0',
+  '4px',
+  '8px',
+  '16px',
+  '32px',
+  '64px',
+  '128px',
+  '256px',
+  '512px',
+]
+
+/**
+ * Typographic scale
+ */
+const fontSizes = [
+  '12px',
+  '14px',
+  '16px',
+  '20px',
+  '24px',
+  '32px',
+  '48px',
+  '64px',
+  '96px',
+  '128px',
+]
+
+const lineHeights = [1, 1.125, 1.25, 1.5]
+
+const fontWeights = {
+  normal: 400,
+  semibold: 600,
+}
+
+/**
+ * Letter-spacing should vary, depending on usage of text
+ */
+const letterSpacings = {
+  normal: 'normal',
+  caps: '0.25em',
+  labels: '0.05em',
+}
+
+/**
+ * Border-radius
+ */
+const radii = ['0', '2px', '4px', '8px', '16px']
+
 /**
  * Primary: Colors to use for actionable items, such as links, buttons etc.
  * Grey: Colors for items that are not that important
@@ -19,7 +79,7 @@ const colors = {
   pageBackground: 'hsl(228, 33%, 97%)',
   white: 'hsl(0, 0%, 100%)',
   black: 'hsl(0, 0%, 0%)',
-  primary: {
+  blue: {
     100: 'hsl(223, 88%, 97%)',
     200: 'hsl(223, 72%, 90%)',
     300: 'hsl(223, 71%, 76%)',
@@ -76,85 +136,97 @@ const colors = {
   },
 }
 
-const schemes = {
-  base: {
-    base: colors.primary[500],
-    sm: colors.green[600],
-    md: colors.red[500],
-    lg: colors.yellow[500],
+colors.text = colors.blue[500]
+colors.background = colors.white
+colors.primary = colors.green[500]
+colors.secondary = colors.red[500]
+colors.border = colors.blue[500]
+
+const defaultColorScheme = {
+  base: colors.blue[500],
+  base_contrast: colors.red[100],
+  highlight: colors.green[500],
+  background: colors.white,
+}
+const darkColorScheme = {
+  base: colors.red[100],
+  base_contrast: colors.red[100],
+  highlight: colors.green[500],
+  background: colors.grey[900],
+}
+const smColorScheme = {
+  base: colors.green[800],
+  base_contrast: colors.red[100],
+  highlight: colors.red[500],
+  background: colors.grey[900],
+}
+const mdColorScheme = {
+  base: colors.red[500],
+  base_contrast: colors.blue[100],
+  highlight: colors.green[500],
+  background: colors.grey[900],
+}
+const lgColorScheme = {
+  base: colors.yellow[500],
+  base_contrast: colors.blue[100],
+  highlight: colors.red[300],
+  background: colors.grey[900],
+}
+
+const colorSchemes = {
+  default: { ...defaultColorScheme },
+  dark: { ...darkColorScheme },
+  xs: { ...defaultColorScheme },
+  sm: { ...smColorScheme },
+  md: { ...mdColorScheme },
+  lg: { ...lgColorScheme },
+  // @todo: extended schemes, dark theme?
+}
+
+const buttonSchemes = {
+  // @todo: button schemes
+  // base: schemes.base
+}
+
+const buttons = {
+  primary: {
+    color: 'white',
+    backgroundColor: colors.blue[600],
+  },
+  secondary: {
+    color: 'white',
+    backgroundColor: colors.green[600],
+  },
+  danger: {
+    color: 'white',
+    backgroundColor: colors.red[800],
   },
 }
-
-/**
- * Space is used for margin and padding scales.
- * It's recommended to use powers of two to ensure alignment across the entire project
- */
-const space = [
-  '0',
-  '4px',
-  '8px',
-  '16px',
-  '32px',
-  '64px',
-  '128px',
-  '256px',
-  '512px',
-]
-
-/**
- * Typographic scale
- */
-const fontSizes = [
-  '12px',
-  '14px',
-  '16px',
-  '20px',
-  '24px',
-  '32px',
-  '48px',
-  '64px',
-  '96px',
-  '128px',
-]
-
-const lineHeights = [1, 1.125, 1.25, 1.5]
-
-const fontWeights = {
-  normal: 400,
-  semibold: 600,
-}
-
-/**
- * Letter-spacing should vary, depending on usage of text
- */
-const letterSpacings = {
-  normal: 'normal',
-  caps: '0.25em',
-  labels: '0.05em',
-}
-
-/**
- * Border-radius
- */
-const radii = ['0', '2px', '4px', '8px', '16px']
-
-const variants = {
-  region: {
-    bg: 'pink',
-    p: [1, 2, 3],
+const buttonSizes = {
+  medium: {
+    fontSize: fontSizes[2],
+    padding: `8px 16px`,
+    borderRadius: radii[2],
+  },
+  large: {
+    fontSize: fontSizes[3],
+    padding: `12px 24px`,
+    borderRadius: radii[3],
   },
 }
 
 export const theme = {
   name: 'Default',
   breakpoints,
+  breakpointsObj,
   colors,
-  schemes,
+  colorSchemes,
   space,
   fontSizes,
   lineHeights,
   fontWeights,
   letterSpacings,
   radii,
-  variants,
+  buttons,
+  buttonSizes,
 }

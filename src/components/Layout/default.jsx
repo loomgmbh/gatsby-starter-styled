@@ -8,30 +8,26 @@ import { Box, Flex } from '@components/Grid'
 import Region from './Region'
 
 // const regionStyles = { background: 'orange', p: {[1]} }
-const Layout = ({ title, description, children }) => {
+const Layout = ({ siteTitle, children, menu, sidebar }) => {
   return (
     <Flex p={[1, 1, 1]} flexWrap="wrap">
       <Region className="header" width={1}>
-        <Header title={title} description={description} />
+        <Header siteTitle={siteTitle} />
       </Region>
-      <Region className="menu" width={1 / 2}>
-        <Box>Main Menu!</Box>
-      </Region>
-      <Region className="breadcrumb" width={1 / 2}>
-        <Box>@todo breadcrumb</Box>
-      </Region>
-      <Region className="sidebar" width={1 / 3}>
-        <Box>Sidebar</Box>
-      </Region>
-      <Region className="main" width={2 / 3}>
+      {menu ? (
+        <Region className="menu" width={1}>
+          <Box>{menu}</Box>
+        </Region>
+      ) : null}
+      {sidebar ? (
+        <Region className="sidebar" width={1 / 3}>
+          <Box>Sidebar</Box>
+        </Region>
+      ) : null}
+      <Region className="main" width={sidebar ? 2 / 3 : 1}>
         <Box>{children}</Box>
       </Region>
-      <Region
-        className="footer"
-        width={1}
-        // css={{ background: 'pink' }}
-        // background="#000"
-      >
+      <Region className="footer" width={1}>
         <Footer> </Footer>
       </Region>
     </Flex>

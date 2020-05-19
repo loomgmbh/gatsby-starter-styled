@@ -4,16 +4,20 @@ import Image from '@components/Image'
 import { SEO } from '@components/SEO'
 import { Text } from '@components/Text'
 import { Box, Br } from '@components/Grid'
-import Layout from '@components/Layout/frontpage'
-// import {
-//   useCookieConsentState,
-//   useCookieConsentDispatch,
-// } from '@src/config/CookieConsent'
-import { ThemeContext } from '../config/Context'
+import Layout from '@components/Layout/default'
+import {
+  useCookieConsentState,
+  useCookieConsentDispatch,
+} from '@src/config/CookieConsent'
+import styled from '@style'
+import { ThemeContext } from '../config/ThemeContext'
+
+const Menu = styled('ul')
+// const MenuWrapper = () => <Menu>findMe!</Menu>
 
 const IndexPage = props => {
-  // const cookieConsentState = useCookieConsentState()
-  // const cookieConsentDispatch = useCookieConsentDispatch()
+  const cookieConsentState = useCookieConsentState()
+  const cookieConsentDispatch = useCookieConsentDispatch()
   return (
     <ThemeContext.Consumer>
       {context => (

@@ -15,6 +15,7 @@ exports.onCreateWebpackConfig = ({ actions }) => {
         '@components': path.resolve(__dirname, './src/components'),
         '@test': path.resolve(__dirname, './src/util/test'),
         '@config': path.resolve(__dirname, './src/config'),
+        '@util': path.resolve(__dirname, './src/util'),
         '@src': path.resolve(__dirname, './src'),
       },
     },

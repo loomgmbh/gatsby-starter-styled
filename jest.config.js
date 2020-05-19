@@ -21,6 +21,7 @@ module.exports = {
     '^@components(.*)$': '<rootDir>/src/components/$1',
     '^@test$': '<rootDir>/src/util/test/',
     '^@config$': '<rootDir>/src/config/',
+    '^@util$': '<rootDir>/src/util/',
     '^@src$': '<rootDir>/src/',
   },
 }

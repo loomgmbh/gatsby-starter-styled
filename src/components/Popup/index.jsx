@@ -1,6 +1,7 @@
 import React from 'react'
 import { Box } from '@components/Grid'
 import { Text } from '@components/Text'
+import { Button } from '@components/Button'
 
 const Popup = ({ dispatch }) => (
   <Box
@@ -16,12 +17,17 @@ const Popup = ({ dispatch }) => (
     <Text as="h3" pb={[3]}>
       We use cookies!
     </Text>
-    <button type="button" onClick={() => dispatch({ type: 'acceptCurrent' })}>
+    <Button
+      size="large"
+      variant="secondary"
+      onClick={() => dispatch({ type: 'acceptCurrent' })}
+      mr={[2]}
+    >
       Accept
-    </button>
-    <button type="button" onClick={() => dispatch({ type: 'declineAll' })}>
+    </Button>
+    <Button size="large" onClick={() => dispatch({ type: 'declineAll' })}>
       Decline
-    </button>
+    </Button>
   </Box>
 )
 
