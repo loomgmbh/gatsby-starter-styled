@@ -17,16 +17,14 @@ const Layout = props => {
     <ThemeContext.Consumer>
       {context => (
         <>
-          {console.log(theme.colorSchemes[context.theme].background)}
           <ThemeProvider theme={theme}>
             <GlobalStyles />
             <Wrapper
-              // className={context.isDark ? 'darkTheme' : 'lightTheme'}
-              className="theme-wrapper"
+              className={`${context.theme}-theme theme-wrapper`}
               theme={context.theme}
               variant={context.viewport}
-              color={theme.colorSchemes[context.theme].base}
-              background={theme.colorSchemes[context.theme].background}
+              color={theme.colorSchemes[context.theme].base ?? null}
+              background={theme.colorSchemes[context.theme].background ?? null}
               css="transition: 200ms all"
             >
               <CookieConsentProvider>{children}</CookieConsentProvider>

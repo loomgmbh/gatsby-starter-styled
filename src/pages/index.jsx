@@ -12,9 +12,6 @@ import {
 import styled from '@style'
 import { ThemeContext } from '../config/ThemeContext'
 
-const Menu = styled('ul')
-// const MenuWrapper = () => <Menu>findMe!</Menu>
-
 const IndexPage = props => {
   const cookieConsentState = useCookieConsentState()
   const cookieConsentDispatch = useCookieConsentDispatch()
@@ -23,7 +20,7 @@ const IndexPage = props => {
       {context => (
         <>
           <SEO />
-          <Layout>
+          <Layout menu>
             <button onClick={() => context.changeTheme('dark')} type="button">
               {context.theme}
             </button>

@@ -5,6 +5,7 @@ import Header from '@components/Header'
 import Footer from '@components/Footer'
 import { Box, Flex } from '@components/Grid'
 
+import Menu from '@components/Menu'
 import Region from './Region'
 
 // const regionStyles = { background: 'orange', p: {[1]} }
@@ -16,7 +17,7 @@ const Layout = ({ siteTitle, children, menu, sidebar }) => {
       </Region>
       {menu ? (
         <Region className="menu" width={1}>
-          <Box>{menu}</Box>
+          <Menu />
         </Region>
       ) : null}
       {sidebar ? (

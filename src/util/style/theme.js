@@ -34,6 +34,10 @@ const space = [
   '512px',
 ]
 
+space.unit = {
+  base: space[3],
+}
+
 /**
  * Typographic scale
  */
@@ -154,6 +158,12 @@ const darkColorScheme = {
   highlight: colors.green[500],
   background: colors.grey[900],
 }
+const dorkColorScheme = {
+  base: null,
+  base_contrast: null,
+  highlight: null,
+  background: null,
+}
 const smColorScheme = {
   base: colors.green[800],
   base_contrast: colors.red[100],
@@ -176,6 +186,7 @@ const lgColorScheme = {
 const colorSchemes = {
   default: { ...defaultColorScheme },
   dark: { ...darkColorScheme },
+  dork: { ...dorkColorScheme },
   xs: { ...defaultColorScheme },
   sm: { ...smColorScheme },
   md: { ...mdColorScheme },

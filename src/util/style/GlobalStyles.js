@@ -10,6 +10,16 @@ const GlobalStyles = createGlobalStyle`
     box-sizing: border-box;
   }
 
+  ul {
+    margin: 0;
+    padding: 0;
+
+    li {
+      margin: 0;
+      list-style: none; 
+    }
+  }
+
   // html,
   // body {
   //   min-height: 100%;
