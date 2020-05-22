@@ -148,6 +148,7 @@ colors.border = colors.blue[500]
 
 const defaultColorScheme = {
   base: colors.blue[500],
+  link: colors.blue[500],
   base_contrast: colors.red[100],
   highlight: colors.green[500],
   background: colors.white,
@@ -159,10 +160,10 @@ const darkColorScheme = {
   background: colors.grey[900],
 }
 const dorkColorScheme = {
-  base: null,
-  base_contrast: null,
-  highlight: null,
-  background: null,
+  base: colors.red[500],
+  base_contrast: colors.green[100],
+  highlight: colors.red[100],
+  background: colors.yellow[700],
 }
 const smColorScheme = {
   base: colors.green[800],

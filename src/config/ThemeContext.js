@@ -8,7 +8,8 @@ import { useWindowDimensions, getViewport } from '../util/index'
 export const ThemeContext = React.createContext()
 
 const Provider = props => {
-  const [theme, setTheme] = useState('default')
+  const localState = JSON.parse(localStorage.getItem('theme-name'))
+  const [theme, setTheme] = useState(localState || 'default')
   const { height, width } = useWindowDimensions()
   const [viewport, setViewport] = useState('none')
   useEffect(() => {
@@ -19,7 +20,10 @@ const Provider = props => {
     <ThemeContext.Provider
       value={{
         theme,
-        changeTheme: themeName => setTheme(themeName),
+        changeTheme: themeName => {
+          setTheme(themeName)
+          localStorage.setItem('theme-name', JSON.stringify(themeName))
+        },
         viewport,
         changeViewport: viewportName => setViewport(viewportName),
       }}

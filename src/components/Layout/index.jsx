@@ -1,5 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { positions, Provider as AlertProvider } from 'react-alert'
+import AlertTemplate from 'react-alert-template-oldschool-dark'
 import GlobalStyles from '@style/GlobalStyles'
 import styled, { ThemeProvider, theme } from '@style'
 import { ThemeContext } from '@config/ThemeContext'
@@ -9,7 +11,6 @@ import { Box } from '@components/Grid'
 const Wrapper = styled(Box)`
   transition: all 500 ease-out;
 `
-
 const Layout = props => {
   const { children } = props
 
@@ -27,7 +28,15 @@ const Layout = props => {
               background={theme.colorSchemes[context.theme].background ?? null}
               css="transition: 200ms all"
             >
-              <CookieConsentProvider>{children}</CookieConsentProvider>
+              <CookieConsentProvider>
+                <AlertProvider
+                  template={AlertTemplate}
+                  timeout={5000}
+                  position={positions.BOTTOM_CENTER}
+                >
+                  {children}
+                </AlertProvider>
+              </CookieConsentProvider>
             </Wrapper>
           </ThemeProvider>
         </>

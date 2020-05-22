@@ -21,11 +21,8 @@ const IndexPage = props => {
         <>
           <SEO />
           <Layout menu>
-            <button onClick={() => context.changeTheme('dark')} type="button">
-              {context.theme}
-            </button>
             <Text as="h2" mb={3}>
-              Guten Tag : )
+              Features:
             </Text>
             <Text mb={4}>
               Built with: <Br />
