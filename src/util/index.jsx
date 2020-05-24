@@ -44,4 +44,10 @@ const getViewport = (height, width) => {
   return viewportName ?? null
 }
 
-export { getWindowDimensions, useWindowDimensions, getViewport }
+const getThemeName = () => {
+  return typeof localStorage !== 'undefined'
+    ? JSON.parse(localStorage.getItem('theme-name'))
+    : 'default'
+}
+
+export { getWindowDimensions, useWindowDimensions, getViewport, getThemeName }

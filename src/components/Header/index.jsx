@@ -4,7 +4,9 @@ import PropTypes from 'prop-types'
 import { Link } from '@components/Link'
 import { Box, Flex } from '@components/Grid'
 import { Text } from '@components/Text'
+import Switch from '@components/Switch'
 import styled, { space, layout } from '@style'
+import { getThemeName } from '@src/util'
 import icon from '../../../static/images/tnt.svg'
 import pixel from '../../../static/images/0.png'
 
@@ -54,6 +56,11 @@ const Header = ({ title, description }) => {
           {description ??
             data.site.siteMetadata.description ??
             'Default description'}
+        </Text>
+      </Box>
+      <Box>
+        <Text as="h5">
+          <Switch themeName={getThemeName()} />
         </Text>
       </Box>
     </Flex>

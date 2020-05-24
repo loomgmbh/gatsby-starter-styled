@@ -16,7 +16,7 @@ const Radio = ({ id, name, value, label, register, onChange }) => {
           defaultChecked={id === value}
           onChange={onChange ? () => onChange(value) : null}
         />
-        <label htmlFor={id}>{label}</label>
+        {label ? <label htmlFor={id}>{label}</label> : null}
       </Styled>
     </>
   )
@@ -45,17 +45,21 @@ const Styled = styled.div`
       height: 17px; /* dim. de la case */
       border: 1px solid #aaa;
       background: #f8f8f8;
-      border-radius: 3px; /* angles arrondis */
+      border-radius: 50%
       box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3); /* légère ombre interne */
+      
     }
 
     &:after {
-      content: '✔';
+      content: '';
+      border-radius: 50%
+      background: green;
       position: absolute;
-      top: -1px;
-      left: 2px;
+      top: 5.05px;
+      left: 3.9px;
+      width: 9.8px;
+      height: 9.8px;
       font-size: 16px;
-      color: #09ad7e;
       transition: all 0.2s; /* on prévoit une animation */
     }
   }

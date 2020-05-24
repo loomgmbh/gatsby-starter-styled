@@ -36,6 +36,7 @@ const space = [
 
 space.unit = {
   base: space[3],
+  small: space[1],
 }
 
 /**
@@ -148,37 +149,42 @@ colors.border = colors.blue[500]
 
 const defaultColorScheme = {
   base: colors.blue[500],
-  link: colors.blue[500],
+  link: colors.green[700],
   base_contrast: colors.red[100],
   highlight: colors.green[500],
   background: colors.white,
 }
 const darkColorScheme = {
   base: colors.red[100],
+  link: colors.yellow[700],
   base_contrast: colors.red[100],
   highlight: colors.green[500],
   background: colors.grey[900],
 }
 const dorkColorScheme = {
   base: colors.red[500],
+  link: colors.green[700],
   base_contrast: colors.green[100],
   highlight: colors.red[100],
   background: colors.yellow[700],
 }
 const smColorScheme = {
   base: colors.green[800],
+  link: colors.green[700],
   base_contrast: colors.red[100],
   highlight: colors.red[500],
   background: colors.grey[900],
 }
 const mdColorScheme = {
   base: colors.red[500],
+  link: colors.green[700],
   base_contrast: colors.blue[100],
   highlight: colors.green[500],
   background: colors.grey[900],
 }
 const lgColorScheme = {
   base: colors.yellow[500],
+  link: colors.green[700],
   base_contrast: colors.blue[100],
   highlight: colors.red[300],
   background: colors.grey[900],

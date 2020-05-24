@@ -35,7 +35,7 @@ const IndexPage = props => {
               </OutboundLink>{' '}
             </Text>
             <Box maxWidth="300px" mb={4}>
-              <Image />
+              {/* <Image /> */}
             </Box>
             <Link to="/page-2/">Go to page 2</Link>
           </Layout>

@@ -3,13 +3,11 @@
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/jsx-filename-extension */
 import React, { useState, useEffect } from 'react'
-import { useWindowDimensions, getViewport } from '../util/index'
+import { useWindowDimensions, getViewport, getThemeName } from '../util/index'
 
 export const ThemeContext = React.createContext()
-
 const Provider = props => {
-  const localState = JSON.parse(localStorage.getItem('theme-name'))
-  const [theme, setTheme] = useState(localState || 'default')
+  const [theme, setTheme] = useState(getThemeName())
   const { height, width } = useWindowDimensions()
   const [viewport, setViewport] = useState('none')
   useEffect(() => {

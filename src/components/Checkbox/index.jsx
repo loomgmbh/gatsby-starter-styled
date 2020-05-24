@@ -6,7 +6,6 @@ const Checkbox = ({ label, checked }) => {
     <Styled onClick={() => console.log(checked)}>
       {/* <Styled onClick={() => this.props.onChange(!this.props.checked)}> */}
       <input type="checkbox" checked={checked} id="check" />
-      <label htmlFor="check">{label}</label>
     </Styled>
   )
 }

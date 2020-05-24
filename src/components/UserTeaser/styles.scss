@@ -1,0 +1,8 @@
+.user-teaser,
+.user-teaser > * {
+  display: flex;
+}
+
+.user-teaser > * > * {
+  padding-right: 20px;
+}

@@ -1,0 +1,6 @@
+$breakpoint-tablet: 768px;
+.login-form {
+  @media (min-width: $breakpoint-tablet) {
+    max-width: 50%;
+  }
+}
