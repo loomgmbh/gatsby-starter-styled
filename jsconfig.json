@@ -6,7 +6,9 @@
     "paths": {
       "@style": ["./src/util/style"],
       "@components": ["./src/components"],
+      "@templates": ["./src/templates"],
       "@config": ["./src/config"],
+      "@util": ["./src/util"],
       "@src/*": ["./src/*"]
     }
   },
