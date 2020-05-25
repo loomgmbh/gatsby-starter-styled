@@ -11,12 +11,19 @@ import Region from './Region'
 // const regionStyles = { background: 'orange', p: {[1]} }
 const Layout = ({ siteTitle, children, menu, sidebar }) => {
   return (
-    <Flex p={[1, 1, 1]} flexWrap="wrap">
-      <Region className="header" width={1}>
+    <Flex
+      p={[1, 1, 1]}
+      flexWrap="wrap"
+      flexDirection="column"
+      alignItems="stretch"
+      height="100%"
+      css="min-height: 100vh;"
+    >
+      <Region className="header" width={1} flexShrink="1">
         <Header siteTitle={siteTitle} />
       </Region>
       {menu ? (
-        <Region className="menu" width={1}>
+        <Region className="menu" width={1} flexShrink="1">
           <Menu />
         </Region>
       ) : null}
@@ -25,10 +32,15 @@ const Layout = ({ siteTitle, children, menu, sidebar }) => {
           <Box>Sidebar</Box>
         </Region>
       ) : null}
-      <Region className="main" width={sidebar ? 2 / 3 : 1}>
+      <Region
+        className="main"
+        width={sidebar ? 2 / 3 : 1}
+        flex="1 0 auto"
+        css="display: flex; flex-direction: column;"
+      >
         <Box>{children}</Box>
       </Region>
-      <Region className="footer" width={1}>
+      <Region className="footer" width={1} flexShrink="0">
         <Footer> </Footer>
       </Region>
     </Flex>

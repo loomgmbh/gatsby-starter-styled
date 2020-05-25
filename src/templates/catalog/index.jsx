@@ -1,12 +1,13 @@
-import React from 'react';
-import { graphql } from 'gatsby';
-import { Helmet } from 'react-helmet';
-import Layout from '../../components/Layout';
-import CatalogPage from './CatalogPage';
+import React from 'react'
+import { graphql } from 'gatsby'
+import { Helmet } from 'react-helmet'
+import Layout from '../../components/Layout'
+import CatalogPage from './CatalogPage'
 
-export default (props) => {
-  const { title, description } = props.data.collection.nodes[0];
-  const { storeName } = props.data.store.siteMetadata.gatsbyStorefrontConfig;
+export default props => {
+  console.log(props)
+  const { title, description } = props.data.collection.nodes[0]
+  const { storeName } = props.data.store.siteMetadata.gatsbyStorefrontConfig
   return (
     <Layout>
       <Helmet title={title} titleTemplate={`%s — ${storeName}`} defer={false}>
@@ -14,8 +15,8 @@ export default (props) => {
       </Helmet>
       <CatalogPage {...props} />
     </Layout>
-  );
-};
+  )
+}
 
 export const catalogQuery = graphql`
   query CatalogQuery($handle: String, $enableWebp: Boolean!) {
@@ -89,4 +90,4 @@ export const catalogQuery = graphql`
       }
     }
   }
-`;
+`

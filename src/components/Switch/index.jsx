@@ -5,7 +5,7 @@ import Radio from '@components/Radio'
 
 const switchGroup = 'switch'
 const Switch = ({ themeName }) => {
-  console.log(themeName === 'dark')
+  // console.log(themeName === 'dark')
   return (
     <Styled onClick={() => console.log(themeName)}>
       {/* <Styled onClick={() => this.props.onChange(!this.props.checked)}> */}

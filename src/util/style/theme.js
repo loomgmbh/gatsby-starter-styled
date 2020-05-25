@@ -11,13 +11,6 @@ breakpoints.md = breakpoints[1]
 breakpoints.lg = breakpoints[2]
 breakpoints.xl = breakpoints[3]
 
-const breakpointsObj = {
-  sm: '576px',
-  md: '786px',
-  lg: '992px',
-  xl: '1200px',
-}
-
 /**
  * Space is used for margin and padding scales.
  * It's recommended to use powers of two to ensure alignment across the entire project
@@ -170,9 +163,9 @@ const dorkColorScheme = {
 }
 const smColorScheme = {
   base: colors.green[800],
-  link: colors.green[700],
+  link: colors.yellow[700],
   base_contrast: colors.red[100],
-  highlight: colors.red[500],
+  highlight: colors.green[500],
   background: colors.grey[900],
 }
 const mdColorScheme = {
@@ -189,6 +182,13 @@ const lgColorScheme = {
   highlight: colors.red[300],
   background: colors.grey[900],
 }
+const xlColorScheme = {
+  base: colors.yellow[500],
+  link: colors.green[700],
+  base_contrast: colors.blue[100],
+  highlight: colors.red[300],
+  background: colors.grey[900],
+}
 
 const colorSchemes = {
   default: { ...defaultColorScheme },
@@ -198,6 +198,7 @@ const colorSchemes = {
   sm: { ...smColorScheme },
   md: { ...mdColorScheme },
   lg: { ...lgColorScheme },
+  xl: { ...xlColorScheme },
   // @todo: extended schemes, dark theme?
 }
 
@@ -236,7 +237,6 @@ const buttonSizes = {
 export const theme = {
   name: 'Default',
   breakpoints,
-  breakpointsObj,
   colors,
   colorSchemes,
   space,

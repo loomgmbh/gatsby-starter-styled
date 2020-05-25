@@ -10,9 +10,21 @@ const Region = ({
   className,
   css,
   borderColor,
+  flex,
+  flexGrow,
+  flexShrink,
 }) => {
   return (
-    <Box width={width} p={[1, 1, 1]} css={css} className={className} id={id}>
+    <Box
+      width={width}
+      p={[1, 1, 1]}
+      css={css}
+      className={className}
+      id={id}
+      flex={flex}
+      flexGrow={flexGrow}
+      flexShrink={flexShrink}
+    >
       <Box
         p={[2, 3, 4]}
         border={2}
@@ -20,6 +32,7 @@ const Region = ({
         borderColor={borderColor}
         background={background}
         className="region-inner"
+        css="min-height: 100%; flex: 1;"
       >
         {children}
       </Box>

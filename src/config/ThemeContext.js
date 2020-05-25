@@ -9,7 +9,7 @@ export const ThemeContext = React.createContext()
 const Provider = props => {
   const [theme, setTheme] = useState(getThemeName())
   const { height, width } = useWindowDimensions()
-  const [viewport, setViewport] = useState('none')
+  const [viewport, setViewport] = useState('default') // Because we use this for theming, default must be the name of a theme-scheme.
   useEffect(() => {
     setViewport(getViewport(height, width))
   }, [height, width])

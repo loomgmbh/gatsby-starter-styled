@@ -1,13 +1,14 @@
 import React from 'react'
-import PropTypes from 'prop-types'
+// import PropTypes from 'prop-types'
 import { Link } from '@components/Link'
 import { Box, Flex } from '@components/Grid'
+import { Text } from '@components/Text'
 import Radio from '@components/Radio'
 import styled, { themeGet } from '@style'
 import { ThemeContext } from '@config/ThemeContext'
 import { useAlert } from 'react-alert'
 
-const Menu = props => {
+const ThemeSwitcher = ({ wrapper }) => {
   const alert = useAlert()
 
   const MenuItem = styled(Box)`
@@ -34,15 +35,39 @@ const Menu = props => {
   return (
     <ThemeContext.Consumer>
       {context => (
-        <Flex as="ul" className="menu">
+        <Flex as="ul" className="menu" alignItems="center">
           <MenuItem as="li" className="menu-item">
-            <Link to="/recipes">Recipes page</Link>
+            <Text as="h6">Select theme:</Text>
           </MenuItem>
           <MenuItem as="li" className="menu-item">
-            <Link to="/one-pager">One-pager</Link>
+            <Radio
+              id="default"
+              name={radioGroup}
+              value={context.theme}
+              label="Default"
+              type="radio"
+              onChange={e => handleChange(e, 'default', context.changeTheme)}
+            />
           </MenuItem>
           <MenuItem as="li" className="menu-item">
-            <Link to="/cookies">Cookies settings</Link>
+            <Radio
+              id="dark"
+              name={radioGroup}
+              value={context.theme}
+              label="Dark"
+              type="radio"
+              onChange={e => handleChange(e, 'dark', context.changeTheme)}
+            />
+          </MenuItem>
+          <MenuItem as="li" className="menu-item">
+            <Radio
+              id="dork"
+              name={radioGroup}
+              value={context.theme}
+              label="Dork"
+              type="radio"
+              onChange={e => handleChange(e, 'dork', context.changeTheme)}
+            />
           </MenuItem>
         </Flex>
       )}
@@ -60,4 +85,4 @@ const Menu = props => {
 //   description: null,
 // }
 
-export default Menu
+export default ThemeSwitcher
