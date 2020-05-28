@@ -5,6 +5,8 @@ const { createFilePath } = require('gatsby-source-filesystem')
 const hasOwnProp = require('has-own-prop')
 const R = require('ramda')
 
+const { paginate } = require('gatsby-awesome-pagination')
+
 const productTemplate = require.resolve('./src/templates/product/index.jsx')
 const cartTemplate = require.resolve('./src/templates/cart/index.jsx')
 const catalogTemplate = require.resolve('./src/templates/catalog/index.jsx')
@@ -12,17 +14,97 @@ const mainPageTemplate = require.resolve('./src/templates/main/index.jsx')
 const policyTemplate = require.resolve('./src/templates/policy/index.jsx')
 const blogTemplate = require.resolve('./src/templates/blog/index.jsx')
 const pageTemplate = require.resolve('./src/templates/page/index.jsx')
-const articleTemplate = require.resolve(
-  './src/templates/blog/article/index.jsx'
-)
+// const articleTemplate = require.resolve(
+//   './src/templates/blog/article/index.jsx'
+// )
 
 const typeDefs = require('./typedefs')
 
-let isShopifyLite = false
-let enableWebp = true
+const _ = require(`lodash`)
+const Promise = require(`bluebird`)
+
+const slash = require(`slash`)
+const transliteration = require('transliteration')
+
+exports.onCreateNode = ({ node, getNode, actions }) => {
+  const { createNodeField } = actions
+  const { type } = node.internal
+  if (type === 'recipes') {
+    const slugFragment = transliteration.slugify(node.title)
+    const slug = `${slugFragment}`
+    createNodeField({
+      node,
+      name: `slug`,
+      value: slug,
+    })
+    createNodeField({
+      node,
+      name: `path`,
+      value: `/${slug}`,
+    })
+    createNodeField({
+      node,
+      name: `type`,
+      value: type,
+    })
+  }
+}
+exports.createPages = async ({ graphql, actions }) => {
+  const { createPage } = actions
+  return new Promise((resolve, reject) => {
+    return graphql(
+      `
+        {
+          allRecipes(limit: 100) {
+            edges {
+              node {
+                id
+                fields {
+                  path
+                  type
+                }
+              }
+            }
+          }
+        }
+      `
+    ).then(result => {
+      if (result.errors) {
+        reject(result.errors)
+      }
+      const articleTemplate = path.resolve(`./src/templates/recipe.jsx`)
+      const edges = result.data.allRecipes.edges || []
+      _.each(edges, (edge, key) => {
+        if (edge.node.fields.type === 'recipes') {
+          createPage({
+            path: edge.node.fields.path,
+            component: slash(articleTemplate),
+            context: {
+              id: edge.node.id,
+              prev: key > 0 ? edges[key - 1].node.fields.path : null,
+              next:
+                key < edges.length - 1 ? edges[key + 1].node.fields.path : null,
+            },
+          })
+        }
+      })
+      paginate({
+        createPage,
+        items: edges,
+        itemsPerPage: 9,
+        pathPrefix: '/recipes',
+        component: path.resolve(`./src/templates/recipes.jsx`),
+      })
+      resolve()
+    })
+  })
+}
+
+// let isShopifyLite = false
+// let enableWebp = true
 
 // Used as workaround (together with cache) to store and access Blogs ids and handles while creating fields for Articles
-const availableBlogs = []
+// const availableBlogs = []
 
 /**
  * Enable absolute imports with `/src` as root.
@@ -286,23 +368,43 @@ exports.createPages = async ({ graphql, actions }, options) => {
   // await createPoliciesPages(graphql, createPage, finalCartPagePath)
 
   // In case Shopify Lite plan we don't have data to create Pages, Blogs and Articles
-  if (!isShopifyLite) {
-    await createPagePages(graphql, createPage, finalCartPagePath)
+  // if (!isShopifyLite) {
+  //   await createPagePages(graphql, createPage, finalCartPagePath)
 
-    // const queryArticles = await createArticlePages(
-    //   graphql,
-    //   createPage,
-    //   finalCartPagePath
-    // )
+  // const queryArticles = await createArticlePages(
+  //   graphql,
+  //   createPage,
+  //   finalCartPagePath
+  // )
 
-    // await createBlogPages(
-    //   graphql,
-    //   queryArticles,
-    //   articlesPerBlogPage,
-    //   createPage,
-    //   finalCartPagePath
-    // )
-  }
+  // await createBlogPages(
+  //   graphql,
+  //   queryArticles,
+  //   articlesPerBlogPage,
+  //   createPage,
+  //   finalCartPagePath
+  // )
+  // }
+
+  // Fetch your items (blog posts, categories, etc).
+  const products = await graphql(`
+    query AllProductsQuery {
+      allShopifyProduct {
+        nodes {
+          id
+        }
+      }
+    }
+  `)
+
+  // Create your paginated pages
+  paginate({
+    createPage, // The Gatsby `createPage` function
+    items: products.data.allShopifyProduct.nodes, // An array of objects
+    itemsPerPage: 9, // How many items you want per page
+    pathPrefix: '/products', // Creates pages like `/blog`, `/blog/2`, etc
+    component: path.resolve('src/pages/products.jsx'), // Just like `createPage()`
+  })
 }
 
 exports.createSchemaCustomization = ({ actions }) => {

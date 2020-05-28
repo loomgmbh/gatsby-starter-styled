@@ -75,6 +75,25 @@ module.exports = {
     //   },
     // },
     {
+      resolve: 'gatsby-source-drupal',
+      options: {
+        baseUrl: 'https://live-contentacms.pantheonsite.io/',
+        apiBase: 'api', // optional, defaults to `jsonapi`
+        // Use to filter which content to import.
+        links: {
+          articles: 'https://live-contentacms.pantheonsite.io/recipes/',
+        },
+        // basicAuth: {
+        //   username: process.env.BASIC_AUTH_USERNAME,
+        //   password: process.env.BASIC_AUTH_PASSWORD,
+        // },
+        // params: {
+        //   "api-key": process.env.BASIC_AUTH_PASSWORD
+        // },
+      },
+    },
+    `gatsby-plugin-sass`,
+    {
       resolve: 'gatsby-plugin-svgr',
       options: {
         prettier: true, // use prettier to format JS code output (default)

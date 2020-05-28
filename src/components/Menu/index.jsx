@@ -15,28 +15,13 @@ const Menu = props => {
       padding-left: ${themeGet('space.unit.base', '13px')};
     }
   `
-  const radioGroup = 'theme-picker'
-  const handleChange = (e, themeName, changeTheme) => {
-    // Interesting here, is that e === the old value!?
-    changeTheme(themeName)
-    switch (themeName) {
-      case 'dark':
-        alert.success(`Active theme: ${themeName}`)
-        break
-      case 'dork':
-        alert.error(`You're a: ${themeName}`)
-        break
-      default:
-        alert.show(`Active theme: ${themeName}`)
-        break
-    }
-  }
   return (
+    // todo, add active page context.
     <ThemeContext.Consumer>
       {context => (
         <Flex as="ul" className="menu">
           <MenuItem as="li" className="menu-item">
-            <Link to="/recipes">Recipes page</Link>
+            <Link to="/products">Product catalog</Link>
           </MenuItem>
           <MenuItem as="li" className="menu-item">
             <Link to="/one-pager">One-pager</Link>
