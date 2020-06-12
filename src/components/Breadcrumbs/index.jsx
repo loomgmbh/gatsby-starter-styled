@@ -1,71 +1,34 @@
-import React from 'react';
-import { Box, Text } from 'rebass';
-import GatsbyLink from 'gatsby-link';
+import React from 'react'
+import { Breadcrumb } from 'gatsby-plugin-breadcrumb'
+import PropTypes from 'prop-types'
+import { Box } from '@components/Grid'
+import { themeGet } from '@style'
 
-const Breadcrumbs = ({
-  productTitle,
-  collectionTitle,
-  collectionPath,
-  separator,
-}) => {
+const Breadcrumbs = ({ location, crumbLabel }) => {
   return (
-    <Box fontSize={[2]} itemScope itemType="https://schema.org/BreadcrumbList">
-      <Box
-        as="span"
-        itemProp="itemListElement"
-        itemScope
-        itemType="https://schema.org/ListItem"
-      >
-        <GatsbyLink to="/" itemProp="item">
-          <Text as="span" itemProp="name" variant="link">
-            Home
-          </Text>
-        </GatsbyLink>
-      </Box>
-
-      {collectionPath && collectionTitle ? (
-        <Box as="span">
-          <Text as="span" mx={1} variant="link">
-            {separator}
-          </Text>
-          <Box
-            as="span"
-            itemProp="itemListElement"
-            itemScope
-            itemType="https://schema.org/ListItem"
-          >
-            <GatsbyLink to={`${collectionPath}`} mr={1} itemProp="item">
-              <Text as="span" itemProp="name" variant="link">
-                {collectionTitle}
-              </Text>
-            </GatsbyLink>
-          </Box>
-        </Box>
-      ) : (
-        ''
-      )}
-
-      {productTitle ? (
-        <Box as="span">
-          <Text as="span" mx={1}>
-            {separator}
-          </Text>
-          <Box
-            as="span"
-            itemProp="itemListElement"
-            itemScope
-            itemType="https://schema.org/ListItem"
-          >
-            <Text as="span" itemProp="name">
-              {productTitle}
-            </Text>
-          </Box>
-        </Box>
-      ) : (
-        ''
-      )}
+    <Box
+      css={`
+        ol {
+          display: flex;
+          li + li {
+            padding-left: ${themeGet('space.unit.base', '20px')};
+          }
+        }
+      `}
+    >
+      <Breadcrumb location={location} crumbLabel={crumbLabel} />
     </Box>
-  );
-};
+  )
+}
 
-export default Breadcrumbs;
+const hasBreadcrumb = path => {
+  const list = ['/']
+  return !list.includes(path)
+}
+
+Breadcrumbs.propTypes = {
+  location: PropTypes.objectOf(PropTypes.any).isRequired,
+  crumbLabel: PropTypes.string.isRequired,
+}
+
+export { Breadcrumbs, hasBreadcrumb }

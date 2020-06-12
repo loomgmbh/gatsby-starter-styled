@@ -52,6 +52,34 @@ module.exports = {
     },
   },
   plugins: [
+    {
+      resolve: 'gatsby-plugin-lunr',
+      options: {
+        languages: [{ name: 'en' }],
+        fields: [
+          { name: 'title', store: true, attributes: { boost: 20 } },
+          { name: 'difficulty', store: true, attributes: { boost: 7 } },
+          { name: 'instructions', store: true, attributes: { boost: 5 } },
+          { name: 'time', store: true, attributes: { boost: 5 } },
+          { name: 'content' },
+          { name: 'path', store: true },
+          { name: 'date', store: true },
+        ],
+        resolvers: {
+          recipes: {
+            title: node => node.title,
+            difficulty: node => node.difficulty,
+            instructions: node => node.instructions,
+            time: node => node.totalTime,
+            content: node => node.instructions,
+            // @TODO: get url from drupal entity.
+            path: node => `${node.fields.path}`,
+            date: node => node.createdAt,
+          },
+        },
+      },
+      filename: 'search_index.json',
+    },
     // {
     //   resolve: '@gatsbystorefront/gatsby-theme-storefront-shopify',
     //   options: {
@@ -74,6 +102,20 @@ module.exports = {
     //     },
     //   },
     // },
+    {
+      resolve: 'gatsby-plugin-breadcrumb',
+      options: {
+        defaultCrumb: {
+          location: {
+            pathname: '/',
+          },
+          crumbLabel: 'Home',
+          crumbSeparator: ' / ',
+        },
+        // optional: if you are using path prefix
+        // usePathPrefix: '/blog'
+      },
+    },
     {
       resolve: 'gatsby-source-drupal',
       options: {
@@ -152,13 +194,13 @@ module.exports = {
         icon: website.favicon,
       },
     },
-    {
-      resolve: 'gatsby-source-shopify',
-      options: {
-        shopName,
-        accessToken,
-      },
-    },
+    // {
+    //   resolve: 'gatsby-source-shopify',
+    //   options: {
+    //     shopName,
+    //     accessToken,
+    //   },
+    // },
     {
       resolve: 'gatsby-plugin-web-font-loader',
       options: {
@@ -217,21 +259,5 @@ module.exports = {
     },
     'gatsby-plugin-robots-txt',
     'gatsby-plugin-lint-queries',
-    {
-      resolve: '@gatsby-contrib/gatsby-plugin-elasticlunr-search',
-      options: {
-        // Fields to index
-        fields: ['title', 'tags'],
-        // How to resolve each field`s value for a supported node type
-        resolvers: {
-          // For any node of type MarkdownRemark, list how to resolve the fields` values
-          ShopifyProduct: {
-            title: node => node.title,
-            tags: node => node.tags,
-            shopifyThemePath: node => node.fields.shopifyThemePath,
-          },
-        },
-      },
-    },
   ],
 }

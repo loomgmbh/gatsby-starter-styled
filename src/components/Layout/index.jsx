@@ -6,6 +6,7 @@ import GlobalStyles from '@style/GlobalStyles'
 import { ThemeProvider, theme } from '@style'
 import { ThemeContext } from '@config/ThemeContext'
 import { CookieConsentProvider } from '@config/CookieConsent'
+import { SEO } from '@components/SEO'
 
 const Layout = ({ children }) => {
   const getClassName = themeName =>

@@ -28,8 +28,12 @@ const space = [
 ]
 
 space.unit = {
-  base: space[3],
+  base: space[2],
   small: space[1],
+  large: space[4],
+  border: {
+    default: 12,
+  },
 }
 
 /**
@@ -165,7 +169,7 @@ const smColorScheme = {
   base: colors.green[800],
   link: colors.yellow[700],
   base_contrast: colors.red[100],
-  highlight: colors.green[500],
+  highlight: colors.yellow[500],
   background: colors.grey[900],
 }
 const mdColorScheme = {

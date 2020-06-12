@@ -21,7 +21,7 @@ const Menu = props => {
       {context => (
         <Flex as="ul" className="menu">
           <MenuItem as="li" className="menu-item">
-            <Link to="/products">Product catalog</Link>
+            <Link to="/recipes">Search recipes</Link>
           </MenuItem>
           <MenuItem as="li" className="menu-item">
             <Link to="/one-pager">One-pager</Link>

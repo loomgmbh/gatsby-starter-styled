@@ -1,42 +1,75 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Box } from '@components/Grid'
+import styled, {
+  space,
+  color,
+  layout,
+  border,
+  background,
+  position,
+  flexbox,
+  variant,
+  themeGet,
+  propTypes,
+} from '@style'
+import { Box, Flex } from '@components/Grid'
+
+const Styled = styled('div')(
+  space,
+  color,
+  layout,
+  border,
+  background,
+  position,
+  flexbox,
+  variant,
+  {
+    border: '2px solid',
+    height: '100%',
+    width: '100%',
+  },
+  variant({
+    variants: {
+      borderless: {
+        border: 0,
+        padding: '0 !important',
+      },
+    },
+  })
+)
 
 const Region = ({
   children,
   width,
-  background,
+  // background,
   id,
   className,
   css,
-  borderColor,
+  type,
   flex,
-  flexGrow,
-  flexShrink,
 }) => {
   return (
-    <Box
+    <Flex
       width={width}
-      p={[1, 1, 1]}
+      p={[1, 2, 3]}
       css={css}
       className={className}
       id={id}
       flex={flex}
-      flexGrow={flexGrow}
-      flexShrink={flexShrink}
+      flexDirection="column"
+      alignItems="stretch"
     >
-      <Box
-        p={[2, 3, 4]}
-        border={2}
-        borderStyle="solid"
-        borderColor={borderColor}
-        background={background}
+      <Styled
+        p={[2]}
+        // border={2}
+        // background={background}
         className="region-inner"
-        css="min-height: 100%; flex: 1;"
+        variant={type}
+        flex="1 0 auto"
       >
         {children}
-      </Box>
-    </Box>
+      </Styled>
+    </Flex>
   )
 }
 

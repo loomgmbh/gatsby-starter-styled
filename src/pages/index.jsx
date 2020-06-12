@@ -4,7 +4,7 @@ import Image from '@components/Image'
 import { SEO } from '@components/SEO'
 import { Text } from '@components/Text'
 import { Box, Br } from '@components/Grid'
-import Layout from '@components/Layout/default'
+import Layout from '@components/Layout/base'
 import {
   useCookieConsentState,
   useCookieConsentDispatch,
@@ -20,7 +20,7 @@ const IndexPage = props => {
       {context => (
         <>
           <SEO />
-          <Layout menu>
+          <Layout header menu footer>
             <Text as="h2" mb={3}>
               Features:
             </Text>

@@ -1,0 +1,179 @@
+import React, { useState, useEffect } from 'react'
+import { graphql, navigate, StaticQuery } from 'gatsby'
+import debounce from 'lodash.debounce'
+// import Autosuggest from 'react-autosuggest';
+// import { Link, OutboundLink } from '@components/Link'
+import { SEO } from '@components/SEO'
+import { Text } from '@components/Text'
+import { Flex, Box, Br } from '@components/Grid'
+import Layout from '@components/Layout/base'
+import SearchBar from '@components/form/SearchBar'
+import SearchResultsHeader from '@components/form/SearchResultsHeader'
+import Autosuggester from '@components/form/SearchBar/Autosuggester'
+import SearchResults from '@components/searchResults'
+import { themeGet, theme } from '@style'
+import { ThemeContext } from '@config/ThemeContext'
+import Teaser from '@components/Teaser'
+import { v4 as uuidv4 } from 'uuid'
+import PropTypes from 'prop-types'
+import Pager from '@components/Pager'
+import RecipeTeasersList from './RecipeTeasersList'
+import {
+  getHighlightColor,
+  getHeaderImage,
+  getListItems,
+  getTeaserImage,
+  getTag,
+} from './mixins.js'
+
+// import styled, { space, layout } from '@style'
+
+const Page = props => {
+  const { data, pageContext, location } = props
+  const [results, setResults] = useState([])
+  const searchQuery = new URLSearchParams(location.search).get('fulltext') || ''
+
+  useEffect(() => {
+    // eslint-disable-next-line no-underscore-dangle
+    if (searchQuery && window.__LUNR__) {
+      const debouncedSearch = debounce(async () => {
+        // eslint-disable-next-line no-underscore-dangle
+        const lunr = await window.__LUNR__.__loaded
+        const refs = lunr.en.index.search(searchQuery)
+        const posts = refs.map(({ ref }) => lunr.en.store[ref])
+        setResults(posts)
+      }, 500)
+      debouncedSearch()
+    }
+    if (!searchQuery) {
+      setResults([])
+    }
+  }, [location.search, searchQuery])
+
+  const staticQueryNodes = getListItems(data)
+  // const teasers = results.length ? results : staticQueryNodes
+  const teasers = staticQueryNodes
+  console.log(results)
+  return (
+    <ThemeContext.Consumer>
+      {context => (
+        <Layout
+          header
+          customHeaderTitle="LOOM Cookbook"
+          location={location} // Required.
+          description={false}
+          customIcon={getHeaderImage(data.headerImage)}
+          breadcrumb="Recipes"
+        >
+          <Text as="h2" mb="3" width={[1]}>
+            Recipes
+          </Text>
+          <Flex className="teasers-list-header">
+            <Box width={[1 / 2]} mb={[3]}>
+              <SearchBar
+                width={1}
+                button
+                query={searchQuery}
+                placeholder="Search"
+                id="fulltext"
+                onChange={e => {
+                  // @TODO: is this enough security?
+                  const { value } = e.target
+                  navigate(`/recipes?fulltext=${encodeURIComponent(value)}`)
+                }}
+              />
+            </Box>
+
+            {!!results.length && searchQuery && (
+              <Box
+                className="search-results-header"
+                as="section"
+                aria-label="Search results for all posts"
+              >
+                <Text
+                  as="h3"
+                  className="search-results-count"
+                  id="search-results-count"
+                  aria-live="assertive"
+                >
+                  {`Found ${results.length} posts for "${searchQuery}"`}
+                </Text>
+              </Box>
+            )}
+          </Flex>
+          <RecipeTeasersList teasers={teasers} />
+          <Pager pager={pageContext} route="/recipes" />
+        </Layout>
+      )}
+    </ThemeContext.Consumer>
+  )
+}
+
+Page.propTypes = {
+  data: PropTypes.objectOf(PropTypes.any).isRequired,
+  pageContext: PropTypes.objectOf(PropTypes.any).isRequired,
+  location: PropTypes.objectOf(PropTypes.any).isRequired,
+}
+
+export default Page
+
+export const query = graphql`
+  query ArticleOverviewPageQuery($skip: Int!, $limit: Int!) {
+    recipesList: allRecipes(
+      skip: $skip
+      limit: $limit
+      sort: { fields: [createdAt], order: ASC }
+      filter: { isPublished: { eq: true } }
+    ) {
+      edges {
+        node {
+          id
+          fields {
+            slug
+            path
+          }
+          title
+          path {
+            langcode
+          }
+          createdAt
+          isPublished
+          difficulty
+          totalTime
+          relationships {
+            image {
+              id
+              relationships {
+                imageFile {
+                  localFile {
+                    childImageSharp {
+                      fluid(maxWidth: 600, maxHeight: 300) {
+                        ...GatsbyImageSharpFluid
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    headerImage: file(relativePath: { eq: "grill.jpg" }) {
+      id
+      childImageSharp {
+        fluid(maxWidth: 300, maxHeight: 300) {
+          ...GatsbyImageSharpFluid
+        }
+      }
+    }
+    errorImage: file(relativePath: { eq: "bomb.png" }) {
+      id
+      childImageSharp {
+        fluid(maxWidth: 300, maxHeight: 300) {
+          ...GatsbyImageSharpFluid
+        }
+      }
+    }
+  }
+`

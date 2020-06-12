@@ -9,7 +9,7 @@ const GlobalStyles = createGlobalStyle`
     box-sizing: border-box;
   }
 
-  ul {
+  ul, ol {
     margin: 0;
     padding: 0;
 
@@ -18,6 +18,11 @@ const GlobalStyles = createGlobalStyle`
       list-style: none; 
     }
   }
+
+  form {
+    margin-bottom: 0;
+  }
+
     
   html,
   body {
@@ -28,7 +33,7 @@ const GlobalStyles = createGlobalStyle`
   }
   
   .transition-element, a {
-    transition: all 200ms ease-in;
+    transition: color 300ms ease-in;
   }
 
   body > div:not(#__react-alert__) {
@@ -44,6 +49,18 @@ const GlobalStyles = createGlobalStyle`
 
   .dark-theme-wrapper {
     ${({ theme }) => bgStyles(theme.colorSchemes.dark)};
+  }
+
+  .center-x {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .center-y {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
   }
   
 `

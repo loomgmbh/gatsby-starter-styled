@@ -1,0 +1,189 @@
+after updating view page, maybe have to delete redirect.
+http://esmt-main.test/admin/config/search/redirect
+
+
+
+
+
+drush cim -l main -y
+drush cim -l clean -y
+drush cim -l execed -y
+drush cim -l faculty -y
+drush cim -l degrees -y
+drush sapi-c multisearch -l main
+drush sapi-c multisearch -l execed
+drush sapi-c multisearch -l faculty
+drush sapi-c multisearch -l degrees
+drush sapi-i multisearch -l main
+drush sapi-i multisearch -l execed
+drush sapi-i multisearch -l faculty
+drush sapi-i multisearch -l degrees
+drush cr -l main
+drush cr -l clean
+drush cr -l faculty
+drush cr -l execed
+drush cr -l degrees
+
+
+grep -R --exclude-dir={/Users/ibt/Library,/Users/ibt/Downloads,/System/Library,/usr/libexec,/usr/sbin,/usr/local/var/mysql} '/Users/ibt/Custom/solr' /
+
+/Users/ibt/Library
+/System/Library
+/Users/ibt/Downloads
+
+
+dcr -l main
+d cex -l main -y
+d sapi-i multisearch -l main
+d sapi-i multisearch -l clean
+
+
+dcr -l main
+d cex -l main -y
+d sapi-c multisearch -l main
+d sapi-c multisearch -l clean
+d sapi-c multisearch -l execed
+d sapi-c multisearch -l degrees
+d sapi-c multisearch -l faculty
+d sapi-i multisearch -l main
+d sapi-i multisearch -l clean
+d sapi-i multisearch -l faculty
+d sapi-i multisearch -l execed
+d sapi-i multisearch -l degrees
+
+dcr -l faculty
+
+ 
+d cim -l main -y
+d cim -l clean -y
+d cim -l execed -y
+d cim -l faculty -y
+d cim -l degrees -y
+d sapi-c multisearch -l main
+d sapi-i multisearch -l main
+d sapi-c multisearch -l clean && d sapi-i multisearch -l clean
+d sapi-c multisearch -l faculty && d sapi-i multisearch -l execed
+d sapi-c multisearch -l faculty && d sapi-i multisearch -l faculty
+drush cr -l main
+drush cr -l clean
+
+
+dcr -l main && dcr -l clean
+d cex -l main -y && d cim -l clean -y
+d sapi-c multisearch -l main && d sapi-i multisearch -l main
+d sapi-c multisearch -l clean && d sapi-i multisearch -l clean
+d sapi-c multisearch -l faculty && d sapi-i multisearch -l faculty
+dcr -l main && dcr -l clean
+
+
+drush updb -l main -y
+drush updb -l clean -y
+drush updb -l execed -y
+drush updb -l faculty -y
+drush updb -l degrees -y
+ 
+
+drush cim -l main -y
+drush cim -l clean -y
+drush cim -l execed -y
+drush cim -l faculty -y
+drush cim -l degrees -y
+&drush cr -l main
+drush cr -l clean
+drush cr -l faculty
+drush cr -l execed
+drush cr -l degrees
+
+
+Highlights.php:366 getFullTextFields()
+Mapped fields are 'mapped' to $fields_by_datasource incorrectly. Beginning with an empty index (normal fields: ['entity:node']. Additionally, multiple mapped_field fields on the index will overwrite each other in the array build - Gotcha! This results in a malformed data-array which is passed to extractItemValues()
+
+FieldsHelper.php:222 (extractItemValues()) because of malformed $required_properties passed from getFullTextFields(), the for-loop will return incorrectly mapped data if more than one mapped-field is indexed as fulltext in search-api index! (Gotcha 2). A workaround is to only use one full-text mapped-field in search-api and in the view!
+
+Das Ergebnis-Excerpt ist eine Property von search_api/Item/Item.php. Das Excerpt wird von Highlight.php gesetzt, und zwar aus der Suchphrase + Fulltext-Suchfelder (sehe addExcerpts() in Highlight.php:297 bzw. setExcerpt() in Item.php:377). Wenn wir Highlighting auf unserem Full-Text-Felder aktivieren, ist die Rückgabe das gleiche 
+
+
+solr create -c schulthess
+cd /usr/local/Cellar/solr/6.4.1/server/solr/schulthess
+rm -rf conf
+ln -s ~/Sites/esmt/solr-conf conf
+
+
+solr create_core -c esmt_multi -d /Users/ibt/Custom/solr/8.5.0/config
+su solr -c "/opt/solr/bin/solr create_core -c esmt_multi -d /root/stage/solr/config"
+
+
+    Job offer
+        wird durchsucht
+        bei einem Treffer wird der Teaser angezeigt und linkt direkt auf die externe Seite
+    
+    Knowledge author
+        werden nur im Kontext des knowledge articles gefunden
+    
+    Staff member
+        wird nicht durchsucht
+        soll im Kontext eines Programm items gefunden werden
+    
+    Visiting
+        wird nicht durchsucht
+        nur im kontext einer landingpage
+
+
+    Tiles
+        werden immer im Kontext der Page durchsucht, in welchen sie referenziert sind.
+
+
+
+
+d sapi-c multisearch -l main
+d sapi-i multisearch -l main
+dcr -l main
+
+
+Disable language facet fields for following types b/c they have no standard language field - they are set to default (English) and cant not be changed - not translated:
+
+event
+publication
+job_offer
+press
+
+These can be changed and are translated:
+
+landingpage
+knowledge_article *But! language selector disabled - didn't change.
+news
+press_release
+textpage
+
+
+These can be changed and are NOT translated:
+person *But! language selector disabled - didn't change.
+program
+
+/root/stage/vendor/bin/drush sapi-c -l main
+/root/stage/vendor/bin/drush sapi-c -l degrees
+/root/stage/vendor/bin/drush sapi-c -l faculty
+/root/stage/vendor/bin/drush sapi-c -l execed
+
+/root/stage/vendor/bin/drush sapi-i -l main
+/root/stage/vendor/bin/drush sapi-i -l degrees
+/root/stage/vendor/bin/drush sapi-i -l faculty
+/root/stage/vendor/bin/drush sapi-i -l execed
+
+
+/root/stage/vendor/bin/drush scr test.php -l main
+/root/stage/vendor/bin/drush scr test.php -l faculty
+/root/stage/vendor/bin/drush scr test.php -l degrees
+/root/stage/vendor/bin/drush scr test.php -l execed
+
+
+/root/stage/vendor/bin/drush cr -l main
+/root/stage/vendor/bin/drush cr -l degrees
+/root/stage/vendor/bin/drush cr -l faculty
+/root/stage/vendor/bin/drush cr -l execed
+/root/stage/vendor/bin/drush cr -l schlossplatz
+
+
+
+https://staging.about.esmt.berlin/press/equal4europe-kick-esmt-berlin-participates-project-launch-promote-gender-equality-academic
+https://staging.main.esmt.berlin/press/equal4europe-kick-esmt-berlin-participates-project-launch-promote-gender-equality-academic
