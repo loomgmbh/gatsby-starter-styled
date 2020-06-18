@@ -1,9 +1,17 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { Box } from '@components/Grid'
+import { Box, Flex, Text } from '@base'
 import { Button } from '@components/Button'
+import ChevronRight from '@components/icons/ChevronRight'
 import { v4 as uuidv4 } from 'uuid'
+import { theme } from '@style'
 
-const Dropdown = ({ value, options, placeholder = 'Select', onChange }) => {
+const Dropdown = ({
+  value,
+  options,
+  placeholder = 'Select',
+  onChange,
+  children,
+}) => {
   const node = useRef()
 
   const [open, setOpen] = useState(false)
@@ -29,7 +37,6 @@ const Dropdown = ({ value, options, placeholder = 'Select', onChange }) => {
     } else {
       document.removeEventListener('mousedown', handleClickOutside)
     }
-
     return () => {
       document.removeEventListener('mousedown', handleClickOutside)
     }
@@ -38,11 +45,30 @@ const Dropdown = ({ value, options, placeholder = 'Select', onChange }) => {
   return (
     <Box ref={node} className="dropdown">
       <Button className="dropdown-toggler" onClick={e => setOpen(!open)}>
-        {value || placeholder}
+        <Flex>
+          <Text as="small" mr={[2]}>
+            {value || placeholder}
+          </Text>
+          <Box
+            style={{ transform: open ? 'rotate(90deg)' : 'rotate(0)' }}
+            css={`
+              position: relative;
+              transform: inherit;
+              transition: transform 100ms ease-in;
+              .svg-wrapper {
+                position: relative;
+                top: 50%;
+                transform: translateY(-50%);
+              }
+            `}
+          >
+            <ChevronRight width={[`${theme.space.unit.base}`]} />
+          </Box>
+        </Flex>
       </Button>
       {open && (
-        <Box as="ul" className="dropdown-menu">
-          {options.map(opt => (
+        <Box className="dropdown-menu">
+          {/* {options.map(opt => (
             <Box
               key={uuidv4()}
               as="li"
@@ -51,7 +77,8 @@ const Dropdown = ({ value, options, placeholder = 'Select', onChange }) => {
             >
               {opt}
             </Box>
-          ))}
+          ))} */}
+          {children}
         </Box>
       )}
     </Box>

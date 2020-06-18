@@ -11,6 +11,7 @@ import { SEO } from '@components/SEO'
 const Layout = ({ children }) => {
   const getClassName = themeName =>
     `${themeName}-theme-wrapper theme-wrapper transition-element`
+
   return (
     <ThemeContext.Consumer>
       {context => (

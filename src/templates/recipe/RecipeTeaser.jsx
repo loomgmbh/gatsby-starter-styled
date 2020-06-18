@@ -7,7 +7,7 @@ import Teaser from '@components/Teaser'
 import ThemeContext from '@config/ThemeContext'
 import FallbackImage from '@components/Image/FallbackImage'
 import { themeGet, theme } from '@style'
-import RecipeTeaserMore from './RecipeTeaserMore'
+import RecipeTeaserOverlay from './RecipeTeaserOverlay'
 import {
   getHighlightColor,
   getHeaderImage,
@@ -26,7 +26,7 @@ const RecipeTeaser = ({ node, searchResults, searchQuery, viewport }) => {
       height="100%"
       pb={[2]}
     >
-      <RecipeTeaserMore
+      <RecipeTeaserOverlay
         description={instructions}
         searchQuery={searchQuery}
         loadmore={loadmore}

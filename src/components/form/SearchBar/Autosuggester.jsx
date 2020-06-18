@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { Box } from '@components/Grid'
 import { Text } from '@components/Text'
 import { Link } from '@components/Link'
+import debounce from 'lodash.debounce'
+import { formatNodes } from '@templates/recipe/mixins.js'
 import { v4 as uuidv4 } from 'uuid'
 import { theme } from '@style'
 
@@ -20,7 +22,14 @@ const formatSuggestions = suggestions => {
 
 const active = suggestions => suggestions.length > 0
 
-const Autosuggester = ({ suggestions, viewport }) => {
+const Autosuggester = ({ suggestions, open, setOpen, viewport }) => {
+  const node = useRef()
+
+  const handleChange = selectedValue => {
+    // onChange(selectedValue)
+    setOpen(false)
+  }
+
   const formatted = formatSuggestions(suggestions)
   return (
     <Box
@@ -45,6 +54,7 @@ const Autosuggester = ({ suggestions, viewport }) => {
         li + li {
           margin-top: 5px;
         }
+        top: 40px;
       `}
     >
       {Object.entries(formatted).map(([key, values]) => {

@@ -1,20 +1,15 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { graphql, navigate, StaticQuery } from 'gatsby'
+import { graphql, navigate } from 'gatsby'
 import debounce from 'lodash.debounce'
 // import Autosuggest from 'react-autosuggest';
 // import { Link, OutboundLink } from '@components/Link'
 import { SEO } from '@components/SEO'
+import qs from 'query-string'
 import { Text } from '@components/Text'
 import { Flex, Box, Br } from '@components/Grid'
 import Layout from '@components/Layout/base'
-import SearchBar from '@components/form/SearchBar'
-import SearchResultsHeader from '@components/form/SearchResultsHeader'
-import SearchResults from '@components/searchResults'
 import { themeGet, theme } from '@style'
 import { ThemeContext } from '@config/ThemeContext'
-import Teaser from '@components/Teaser'
-import '@style/forms.scss'
-import { getSearchParams } from '@util/getSearchParams'
 import SyncLoader from 'react-spinners/SyncLoader'
 import PropTypes from 'prop-types'
 import Pager from '@components/Pager'
@@ -28,11 +23,24 @@ import {
   formatNodes,
   getTag,
   hasResults,
-} from '@templates/recipe/mixins.js'
+} from '@templates/recipe/mixins'
+import RecipeSearchForm from './RecipeSearchForm'
+import '@style/forms.scss'
+
+// export const SearchContext = React.createContext()
+
+const getUrlParameters = location => {
+  return qs.parse(location.search)
+}
 
 const Page = props => {
-  const context = React.useContext(ThemeContext)
-  const { viewport, loading, setLoading } = context
+  const [formValues, setFormValues] = useState({})
+  // const context = React.useContext(ThemeContext)
+  // const searchContext = React.useContext(SearchContext)
+  // console.log(searchContext)
+  const [queryParams, setQueryParams] = useState(getUrlParameters(location))
+  const [fulltextQuery, setFulltextQuery] = useState(queryParams.fulltext)
+  const { viewport, loading, setLoading } = React.useContext(ThemeContext)
   const { data, pageContext, location } = props
   const [searchResults, setSearchResults] = useState([])
   const [suggestions, setSuggestions] = useState([])
@@ -40,52 +48,62 @@ const Page = props => {
   // const fulltext = searchParams.fulltext || ''
   // const [searchQuery, setSearchQuery] = useState(fulltext)
   // const params = getSearchParams('fulltext')
-  const [searchQuery, setSearchQuery] = useState(getSearchParams('fulltext'))
+  // const [searchQuery, setSearchQuery] = useState(getSearchParams('fulltext'))
   const staticNodes = getStaticNodes(data)
   const teasers = searchResults.length ? searchResults : staticNodes
 
   useEffect(() => {
-    // eslint-disable-next-line no-underscore-dangle
-    if (searchQuery && window.__LUNR__) {
+    // if (cachedResults) {
+    //   console.log('load from cache')
+    //   // eslint-disable-next-line no-underscore-dangle
+    // } else
+    console.log(query)
+    if (query && window.__LUNR__) {
       const debouncedSearch = debounce(async () => {
         // eslint-disable-next-line no-underscore-dangle
         const lunr = await window.__LUNR__.__loaded
-        const refs = lunr.en.index.search(searchQuery)
+        const refs = lunr.en.index.search(query)
         const results = refs.map(({ ref }) => lunr.en.store[ref])
-        setSearchResults(formatNodes(results, 'search-results'))
-        setLoading(false)
-      }, 100)
+        setSuggestions(results)
+        setSearchResults(results)
+        // setSuggestions(formatNodes(results, 'search-results'))
+        // setOpen(true)
+        console.log(results, suggestions)
+        // setLoading(false)
+      }, 500)
       debouncedSearch()
+    } else {
+      // setLoading(false)
+      // setSuggestions([])
     }
-    if (!searchQuery) {
-      setSearchResults([])
-    }
-  }, [location.search, searchQuery, setLoading])
 
-  // const onClickSubmit = (e, data) => {
-  //   setLoading(true)
-  //   // @TODO: is this enough security?
-  //   // const { value } = e.target
-  //   const { fulltext } = data
-  //   navigate(`/recipes?fulltext=${encodeURIComponent(fulltext)}`)
-  // }
+    // if (open) {
+    //   document.addEventListener('mousedown', handleClickOutside)
+    // } else {
+    //   document.removeEventListener('mousedown', handleClickOutside)
+    // }
+    // return () => {
+    //   document.removeEventListener('mousedown', handleClickOutside)
+    // }
+  }, [])
 
   const onSubmit = (submittedData, e) => {
     console.log(submittedData)
-    const { fulltext } = submittedData
-    setSearchQuery(fulltext)
-    navigate(`/recipes?fulltext=${encodeURIComponent(fulltext)}`)
-    setSuggestions([])
+    // const { fulltext } = submittedData
+    // setSearchQuery(fulltext)
+    // navigate(`/recipes?fulltext=${encodeURIComponent(fulltext)}`)
+    // setSuggestions([])
   }
   const onReset = (e, data, setValue) => {
     e.preventDefault()
     setValue('fulltext', '')
-    setSearchQuery('')
+    // setSearchQuery('')
     // setSearchResults([])
     setSuggestions([])
     navigate(`/recipes`)
   }
 
+  // const searchQuery = 'temp'
   return (
     <Layout
       customHeaderTitle="LOOM Cookbook"
@@ -99,13 +117,12 @@ const Page = props => {
         <Text as="h2" pb="2" mr={[3]}>
           Recipes
         </Text>
-        <SyncLoader
+        {/* <SyncLoader
           loading={loading === false ? null : true}
           color={[theme.colorSchemes[viewport].highlight]}
-        />
-        {console.log(searchResults)}
+        /> */}
         {!!loading ||
-          (hasResults(searchResults, searchQuery) && (
+          (hasResults(searchResults, fulltextQuery) && (
             <Box
               className="search-results-header"
               // ml={[null, 'auto']}
@@ -122,17 +139,17 @@ const Page = props => {
                 aria-live="assertive"
                 css="position: relative; top: 14px;"
               >
-                {`Found ${searchResults.length} posts for "${searchQuery}"`}
+                {`Found ${searchResults.length} posts for "${fulltextQuery}"`}
               </Text>
             </Box>
           ))}
 
         <Box width={[1]}>
-          <SearchBar
+          <RecipeSearchForm
             viewport={viewport}
+            location={location}
             button
             searchQuery={searchQuery}
-            setSearchQuery={setSearchQuery}
             placeholder="Search"
             id="fulltext"
             value={searchQuery ? 'Search again' : '=>'}
@@ -141,6 +158,7 @@ const Page = props => {
             loading={loading}
             setLoading={setLoading}
             searchResults={searchResults}
+            setSearchResults={setSearchResults}
             suggestions={suggestions}
             setSuggestions={setSuggestions}
           />

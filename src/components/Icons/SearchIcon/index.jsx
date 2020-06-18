@@ -1,9 +1,9 @@
-import React from 'react';
-import { Flex } from 'rebass';
+import React from 'react'
+import { Flex } from 'rebass'
 
 const SearchIcon = props => {
   return (
-    <Flex {...props} justifyContent="center">
+    <Flex {...props} justifyContent="center" className="svg-wrapper">
       <svg
         width={
           props.width && !Array.isArray(props.width) ? props.width : '100%'
@@ -18,7 +18,7 @@ const SearchIcon = props => {
         <path d="M0 0h24v24H0z" fill="none" />
       </svg>
     </Flex>
-  );
-};
+  )
+}
 
-export default SearchIcon;
+export default SearchIcon

@@ -1,9 +1,9 @@
-import React from 'react';
-import { Flex } from 'rebass';
+import React from 'react'
+import { Flex } from 'rebass'
 
 const ShoppingCart = props => {
   return (
-    <Flex {...props} justifyContent="center">
+    <Flex {...props} justifyContent="center" className="svg-wrapper">
       <svg
         width={props.width ? props.width : '100%'}
         height={props.height ? props.height : '100%'}
@@ -14,7 +14,7 @@ const ShoppingCart = props => {
         <path d="M0 0h24v24H0z" fill="none" />
       </svg>
     </Flex>
-  );
-};
+  )
+}
 
-export default ShoppingCart;
+export default ShoppingCart

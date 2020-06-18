@@ -19,6 +19,7 @@ module.exports = {
     '.+\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$': `<rootDir>/__mocks__/file-mock.js`,
     '^@style$': '<rootDir>/src/util/style/',
     '^@components(.*)$': '<rootDir>/src/components/$1',
+    '^@base$': '<rootDir>/src/components/base/',
     '^@test$': '<rootDir>/src/util/test/',
     '^@config$': '<rootDir>/src/config/',
     '^@templates$': '<rootDir>/src/templates/',

@@ -64,6 +64,10 @@ const RecipeTeaserMore = ({
           :hover {
             color: ${theme.colorSchemes[viewport].link};
           }
+          :focus {
+            outline: none;
+            color: ${theme.colorSchemes[viewport].base_contrast};
+          }
         `}
         onClick={() => setLoadmore(!loadmore)}
       >
