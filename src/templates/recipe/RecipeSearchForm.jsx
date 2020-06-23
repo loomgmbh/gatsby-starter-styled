@@ -23,6 +23,7 @@ const defaultValues = {
 const RecipeSearchForm = ({
   viewport,
   location,
+  queryParams,
   setSearchResults,
   children,
 }) => {

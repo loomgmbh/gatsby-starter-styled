@@ -30,20 +30,17 @@ import '@style/forms.scss'
 // export const SearchContext = React.createContext()
 
 const getUrlParameters = location => {
-  return qs.parse(location.search)
+  return qs.parse(location.search || '')
 }
 
 const Page = props => {
   const [formValues, setFormValues] = useState({})
-  // const context = React.useContext(ThemeContext)
-  // const searchContext = React.useContext(SearchContext)
-  // console.log(searchContext)
-  const [queryParams, setQueryParams] = useState(getUrlParameters(location))
-  const [fulltextQuery, setFulltextQuery] = useState(queryParams.fulltext)
-  const { viewport, loading, setLoading } = React.useContext(ThemeContext)
   const { data, pageContext, location } = props
+  const [queryParams, setQueryParams] = useState(getUrlParameters(location))
+  const [searchQuery, setSearchQuery] = useState(queryParams.fulltext)
   const [searchResults, setSearchResults] = useState([])
   const [suggestions, setSuggestions] = useState([])
+  const { viewport, loading, setLoading } = React.useContext(ThemeContext)
   // const [searchQuery, setSearchQuery] = useQueryString('fulltext')
   // const fulltext = searchParams.fulltext || ''
   // const [searchQuery, setSearchQuery] = useState(fulltext)
@@ -122,7 +119,7 @@ const Page = props => {
           color={[theme.colorSchemes[viewport].highlight]}
         /> */}
         {!!loading ||
-          (hasResults(searchResults, fulltextQuery) && (
+          (hasResults(searchResults, searchQuery) && (
             <Box
               className="search-results-header"
               // ml={[null, 'auto']}
@@ -139,7 +136,7 @@ const Page = props => {
                 aria-live="assertive"
                 css="position: relative; top: 14px;"
               >
-                {`Found ${searchResults.length} posts for "${fulltextQuery}"`}
+                {`Found ${searchResults.length} posts for "${searchQuery}"`}
               </Text>
             </Box>
           ))}
@@ -152,6 +149,7 @@ const Page = props => {
             searchQuery={searchQuery}
             placeholder="Search"
             id="fulltext"
+            queryParams={queryParams}
             value={searchQuery ? 'Search again' : '=>'}
             onSubmit={onSubmit}
             onReset={onReset}
