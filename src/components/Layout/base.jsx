@@ -36,7 +36,7 @@ const Layout = ({
     <>
       <SEO />
       <Flex
-        p={[1, 1, 1]}
+        p={[2]}
         height="100%"
         flexWrap="wrap"
         alignItems="stretch"

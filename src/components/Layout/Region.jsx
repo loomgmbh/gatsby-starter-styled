@@ -51,7 +51,7 @@ const Region = ({
   return (
     <Flex
       width={width}
-      p={[1, 2, 3]}
+      p={[2]}
       css={css}
       className={className}
       id={id}

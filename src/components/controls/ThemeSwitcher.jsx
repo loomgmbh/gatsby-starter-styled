@@ -1,25 +1,54 @@
+/* eslint-disable compat/compat */
 import React from 'react'
-// import PropTypes from 'prop-types'
-import { Link } from '@components/Link'
-import { Box, Flex } from '@components/Grid'
-import { Text } from '@components/Text'
-import Radio from '@components/Radio'
+import PropTypes from 'prop-types'
+import { Box, Flex, Text } from '@base'
 import styled, { themeGet } from '@style'
 import { ThemeContext } from '@config/ThemeContext'
 import { useAlert } from 'react-alert'
+import { useForm, Controller } from 'react-hook-form'
+import { RadioGroup, FormControlLabel, Radio } from '@material-ui/core'
 
-const ThemeSwitcher = ({ wrapper }) => {
+const ThemeSwitcher = () => {
+  const { control } = useForm()
   const alert = useAlert()
-
   const MenuItem = styled(Box)`
     + li {
       padding-left: ${themeGet('space.unit.base', '13px')};
     }
   `
-  const radioGroup = 'theme-picker'
-  const handleChange = (e, themeName, changeTheme) => {
-    // Interesting here, is that e === the old value!?
-    changeTheme(themeName)
+  const RadioItems = ({ themeName, onClick }) => {
+    const items = { default: 'Default', dark: 'Dark', dork: 'Dork' }
+    return (
+      <RadioGroup
+        row
+        aria-label="theme-switcher"
+        name="theme-switcher-1"
+        value={themeName}
+        onChange={onClick}
+      >
+        {Object.entries(items).map(([key, value]) => {
+          return (
+            <MenuItem as="li" className="menu-item" key={key}>
+              <FormControlLabel
+                id={key}
+                color="secondary"
+                value={key}
+                control={<Radio />}
+                label={value}
+                labelPlacement="start"
+                // checked={themeName === key} # works with or without.
+              />
+            </MenuItem>
+          )
+        })}
+      </RadioGroup>
+    )
+  }
+  RadioItems.propTypes = {
+    onClick: PropTypes.func.isRequired,
+    themeName: PropTypes.string.isRequired,
+  }
+  const doAlert = themeName => {
     switch (themeName) {
       case 'dark':
         alert.success(`Active theme: ${themeName}`)
@@ -32,57 +61,34 @@ const ThemeSwitcher = ({ wrapper }) => {
         break
     }
   }
+  const handleChange = (e, changeTheme) => {
+    const { value } = e.target
+    changeTheme(value)
+    doAlert(value)
+  }
   return (
     <ThemeContext.Consumer>
       {context => (
         <Flex as="ul" className="menu" alignItems="center">
-          <MenuItem as="li" className="menu-item">
-            <Text as="h6">Select theme:</Text>
-          </MenuItem>
-          <MenuItem as="li" className="menu-item">
-            <Radio
-              id="default"
-              name={radioGroup}
-              value={context.theme}
-              label="Default"
-              type="radio"
-              onChange={e => handleChange(e, 'default', context.changeTheme)}
-            />
-          </MenuItem>
-          <MenuItem as="li" className="menu-item">
-            <Radio
-              id="dark"
-              name={radioGroup}
-              value={context.theme}
-              label="Dark"
-              type="radio"
-              onChange={e => handleChange(e, 'dark', context.changeTheme)}
-            />
-          </MenuItem>
-          <MenuItem as="li" className="menu-item">
-            <Radio
-              id="dork"
-              name={radioGroup}
-              value={context.theme}
-              label="Dork"
-              type="radio"
-              onChange={e => handleChange(e, 'dork', context.changeTheme)}
-            />
-          </MenuItem>
+          <Text as="legend" mr={[4]}>
+            Select theme:
+          </Text>
+          <Controller
+            as={
+              <RadioItems
+                themeName={context.theme}
+                onClick={e => {
+                  handleChange(e, context.changeTheme)
+                }}
+              />
+            }
+            name="RadioGroup"
+            control={control}
+          />
         </Flex>
       )}
     </ThemeContext.Consumer>
   )
 }
-
-// Menu.propTypes = {
-//   title: PropTypes.string,
-//   description: PropTypes.string,
-// }
-
-// Menu.defaultProps = {
-//   title: null,
-//   description: null,
-// }
 
 export default ThemeSwitcher

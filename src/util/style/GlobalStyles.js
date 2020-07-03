@@ -38,7 +38,6 @@ const GlobalStyles = createGlobalStyle`
 
   body > div:not(#__react-alert__) {
     ${({ theme }) => bodyStyles(theme.colorSchemes.default)}
-    
     ${({ theme }) => breakpointStyles(theme.colorSchemes, theme.breakpoints)};
   }
 

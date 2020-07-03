@@ -6,31 +6,6 @@ import { Box } from '@base'
 import debounce from 'lodash.debounce'
 
 export default function CountrySelect({ onChange, control }) {
-  const [query, setQuery] = useState('')
-
-  const [suggestions, setSuggestions] = useState(countries)
-
-  useEffect(() => {
-    // if (cachedResults) {
-    //   console.log('load from cache')
-    //   // eslint-disable-next-line no-underscore-dangle
-    // } else
-    console.log(query)
-    if (query && window.__LUNR__) {
-      const debouncedSearch = debounce(async () => {
-        // eslint-disable-next-line no-underscore-dangle
-        const lunr = await window.__LUNR__.__loaded
-        const refs = lunr.en.index.search(query)
-        // const results = refs.map(({ ref }) => lunr.en.store[ref])
-        // setSuggestions(formatNodes(results, 'search-results'))
-        // setLoading(false)
-      }, 100)
-      debouncedSearch()
-    } else {
-      // setLoading(false)
-      // setSuggestions([])
-    }
-  }, [])
   return (
     <Box
       css={[
@@ -50,7 +25,7 @@ export default function CountrySelect({ onChange, control }) {
             )}
             onInputChange={(e, data) => {
               console.log(data)
-              setQuery(data)
+              // setQuery(data)
             }}
             renderInput={params => (
               <TextField
@@ -62,14 +37,14 @@ export default function CountrySelect({ onChange, control }) {
           />
         }
         onChange={([, data]) => {
-          setQuery(data)
-          // console.log(data)
+          // setQuery(data)
+          console.log(data)
           return data
         }}
         name="search"
         control={control}
         value={{ code: 'AF', label: 'Afghanistan', phone: '93' }}
-        defaultValue={{ code: 'AF', label: 'Afghanistan', phone: '93' }}
+        // defaultValue={{ code: 'AF', label: 'Afghanistan', phone: '93' }}
       />
     </Box>
   )

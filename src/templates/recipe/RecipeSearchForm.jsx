@@ -86,9 +86,10 @@ const RecipeSearchForm = ({
   const onSubmit = (submittedData, e) => {
     // localStorage.setItem('searchValues', JSON.stringify(submittedData))
     // const { difficulty, time } = submittedData
-    const submittedValues = getValidated(submittedData)
+    console.log(submittedData)
+    // const submittedValues = getValidated(submittedData)
     // setQueryParams(submittedValues)
-    navigate(`/recipes${buildNewQueryString(submittedValues)}`)
+    // navigate(`/recipes${buildNewQueryString(submittedValues)}`)
     // setSearchQuery(fulltext)
     // setSuggestions([])
   }
@@ -102,6 +103,7 @@ const RecipeSearchForm = ({
     // e.persist()
     const { name } = e.target
     const { value } = e.target
+    console.log(name, value)
     // const d = debounce(() => {
     // setLoading(true)
     // const { value } = e.target
@@ -111,12 +113,13 @@ const RecipeSearchForm = ({
     // d()
   }
 
-  const [data, setData] = useState(null)
+  const [formData, setFormData] = useState(null)
 
   const [autoQuery, setAutoQuery] = useState('')
 
   const arrayDifficulty = ['easy', 'medium', 'hard']
   const arrayTime = ['short', 'long']
+
   function jsUcfirst(string) {
     return string.charAt(0).toUpperCase() + string.slice(1)
   }
@@ -126,30 +129,33 @@ const RecipeSearchForm = ({
       role="search"
       method="GET"
       onSubmit={handleSubmit(data => {
-        setData(data)
-        // console.log(data)
+        // setFormData(data)
+        console.log(data)
       })}
       id="recipe-search-form"
     >
-      {children || <label htmlFor="search-input">{children}</label>}
-      <Flex as="section" mr={[2]} css="position: relative;">
-        <Input
-          type="search"
-          id="search-input"
-          name="fulltext"
-          aria-controls="search-results-count"
-          placeholder="Enter a search query"
-          ref={register}
-          defaultValue={fulltext}
-          autoComplete="off"
-          onChange={e => {
-            handleChange(e)
-            // setQuery(e.target.value)
-            // console.log(e.target.value)
-            // onChange(e, data)
-          }}
-        />
-        {/* <Box ref={node}>
+      <Flex>
+        <Box width={['50%']}>
+          {children || <label htmlFor="search-input">{children}</label>}
+          <Flex as="section" mr={[2]} css="position: relative;">
+            <Input
+              type="search"
+              id="search-input"
+              name="text"
+              aria-controls="search-results-count"
+              placeholder="Enter a search query"
+              ref={register}
+              defaultValue={fulltext}
+              autoComplete="off"
+              onChange={e => {
+                // handleChange(e)
+                // setQuery(e.target.value)
+                // console.log(e.target.value)
+                // onChange(e, data)
+              }}
+              mr={[2]}
+            />
+            {/* <Box ref={node}>
           <Autosuggester
             suggestions={suggestions}
             open={suggestions.length > 0}
@@ -157,77 +163,81 @@ const RecipeSearchForm = ({
             setSuggestions={setSuggestions}
           />
         </Box> */}
-        <Input
-          name="submit"
-          ref={register}
-          type="submit"
-          id="submit"
-          defaultValue="Submit"
-          mr={[2]}
-        />
-        <Input
-          type="reset"
-          defaultValue="Reset"
-          onClick={e => {
-            reset(defaultValues) // Not working :/
-            navigate('/recipes')
-          }}
-        />
+            <Input
+              name="submit"
+              ref={register}
+              type="submit"
+              id="submit"
+              defaultValue="Submit"
+              mr={[2]}
+              onClick={handleSubmit(onSubmit())}
+            />
+            <Input
+              type="reset"
+              defaultValue="Reset"
+              onClick={e => {
+                reset(defaultValues) // Not working :/
+                navigate('/recipes')
+              }}
+            />
+          </Flex>
+        </Box>
+        <Flex
+          width={['50%']}
+          className="search-filters"
+          mt={[2]}
+          css={`
+            button + button {
+              margin-left: ${themeGet('space.unit.base', '23px')};
+            }
+          `}
+        >
+          <Box width={['50%']} as="section">
+            <Controller
+              as={
+                <RadioGroup
+                  aria-label="cooking-difficulty"
+                  name="difficulty"
+                  id="difficulty"
+                >
+                  <FormControlLabel
+                    value="easy"
+                    control={<Radio />}
+                    label="Easy Peasy"
+                  />
+                  <FormControlLabel
+                    value="hard"
+                    control={<Radio />}
+                    label="Gourmet style"
+                  />
+                </RadioGroup>
+              }
+              name="DifficultyRadio"
+              control={control}
+            />
+          </Box>
+          <Box width={['50%']} as="section">
+            <Controller
+              as={
+                <RadioGroup aria-label="cooking-time" name="time" id="time">
+                  <FormControlLabel
+                    value="short"
+                    control={<Radio />}
+                    label="< 30 mins"
+                  />
+                  <FormControlLabel
+                    value="long"
+                    control={<Radio />}
+                    label="> 30 mins"
+                  />
+                </RadioGroup>
+              }
+              name="TimeRadio"
+              control={control}
+            />
+          </Box>
+        </Flex>
       </Flex>
-      <Box
-        className="search-filters"
-        mt={[2]}
-        css={`
-          button + button {
-            margin-left: ${themeGet('space.unit.base', '23px')};
-          }
-        `}
-      >
-        <Box as="section">
-          <Controller
-            as={
-              <RadioGroup
-                aria-label="cooking-difficulty"
-                name="difficulty"
-                id="difficulty"
-              >
-                <FormControlLabel
-                  value="easy"
-                  control={<Radio />}
-                  label="Easy Peasy"
-                />
-                <FormControlLabel
-                  value="hard"
-                  control={<Radio />}
-                  label="Gourmet style"
-                />
-              </RadioGroup>
-            }
-            name="DifficultyRadio"
-            control={control}
-          />
-        </Box>
-        <Box as="section">
-          <Controller
-            as={
-              <RadioGroup aria-label="cooking-time" name="time" id="time">
-                <FormControlLabel
-                  value="short"
-                  control={<Radio />}
-                  label="< 30 mins"
-                />
-                <FormControlLabel
-                  value="long"
-                  control={<Radio />}
-                  label="> 30 mins"
-                />
-              </RadioGroup>
-            }
-            name="TimeRadio"
-            control={control}
-          />
-        </Box>
-      </Box>
     </form>
   )
 }

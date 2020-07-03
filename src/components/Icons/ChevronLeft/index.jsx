@@ -1,9 +1,15 @@
 import React from 'react'
-import { Flex } from 'rebass'
+import { Flex } from '@base'
 
 const ChevronLeft = props => {
+  const { styles, ...other } = props
   return (
-    <Flex {...props} justifyContent="center" className="svg-wrapper">
+    <Flex
+      {...other}
+      justifyContent="center"
+      className="svg-wrapper"
+      css={styles}
+    >
       <svg
         width={props.width ? props.width : '100%'}
         height={props.height ? props.height : '100%'}

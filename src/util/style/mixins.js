@@ -37,6 +37,20 @@ const bodyStyles = colorScheme => {
   return string
 }
 
+const formStyles = colorScheme => {
+  return `
+    .MuiInput-input {
+      color: ${colorScheme.base}
+    }
+    .MuiInput-underline:before {
+      border-bottom-color: ${colorScheme.base}
+    }
+    .Mui-checked {
+      color: ${colorScheme.link}
+    }
+  `
+}
+
 const breakpointStyles = (colorSchemes, breakpoints) => {
   let string = ``
   Object.keys(breakpoints).map(breakpoint => {
@@ -44,6 +58,7 @@ const breakpointStyles = (colorSchemes, breakpoints) => {
       string += `
         @media only screen and (min-width: ${breakpoints[breakpoint]}) {
           ${bodyStyles(colorSchemes[breakpoint])}
+          ${formStyles(colorSchemes[breakpoint])}
       }`
       return string
     }

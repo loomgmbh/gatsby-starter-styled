@@ -8,7 +8,7 @@ import { useWindowDimensions, getViewport, getThemeName } from '../util/index'
 export const ThemeContext = React.createContext()
 const Provider = props => {
   const [theme, setTheme] = useState(getThemeName())
-  const [loading, setLoading] = React.useState(false)
+  const [loading, setLoading] = useState(false)
   const [viewport, setViewport] = useState('default') // Because we use this for theming, default must be the name of a theme-scheme.
   const { height, width } = useWindowDimensions()
   useEffect(() => {

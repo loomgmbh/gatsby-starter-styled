@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, createContext, useContext } from 'react'
+import useQueryString from 'use-query-string'
 import { graphql, navigate } from 'gatsby'
 import debounce from 'lodash.debounce'
 // import Autosuggest from 'react-autosuggest';
@@ -24,6 +25,8 @@ import {
   getTag,
   hasResults,
 } from '@templates/recipe/mixins'
+import ControlledForm from './ControlledForm'
+
 import RecipeSearchForm from './RecipeSearchForm'
 import '@style/forms.scss'
 
@@ -34,13 +37,15 @@ const getUrlParameters = location => {
 }
 
 const Page = props => {
-  const [formValues, setFormValues] = useState({})
   const { data, pageContext, location } = props
-  const [queryParams, setQueryParams] = useState(getUrlParameters(location))
-  const [searchQuery, setSearchQuery] = useState(queryParams.fulltext)
+  const [query, setQuery] = useQueryString(location, navigate)
+  // const [queryParams, setQueryParams] = useState(getUrlParameters(location))
+  const [searchQuery, setSearchQuery] = useState(query.text || '')
+  const [formValues, setFormValues] = useState({})
   const [searchResults, setSearchResults] = useState([])
   const [suggestions, setSuggestions] = useState([])
   const { viewport, loading, setLoading } = React.useContext(ThemeContext)
+  // const data.searchQuery
   // const [searchQuery, setSearchQuery] = useQueryString('fulltext')
   // const fulltext = searchParams.fulltext || ''
   // const [searchQuery, setSearchQuery] = useState(fulltext)
@@ -54,51 +59,44 @@ const Page = props => {
     //   console.log('load from cache')
     //   // eslint-disable-next-line no-underscore-dangle
     // } else
-    console.log(query)
-    if (query && window.__LUNR__) {
+
+    // eslint-disable-next-line no-underscore-dangle
+    if (searchQuery && window.__LUNR__) {
       const debouncedSearch = debounce(async () => {
         // eslint-disable-next-line no-underscore-dangle
         const lunr = await window.__LUNR__.__loaded
-        const refs = lunr.en.index.search(query)
+        const refs = lunr.en.index.search(searchQuery)
         const results = refs.map(({ ref }) => lunr.en.store[ref])
-        setSuggestions(results)
+        // setSuggestions(results)
         setSearchResults(results)
+        console.log(results)
         // setSuggestions(formatNodes(results, 'search-results'))
         // setOpen(true)
-        console.log(results, suggestions)
-        // setLoading(false)
+        // console.log(results, suggestions)
+        setLoading(false)
       }, 500)
       debouncedSearch()
     } else {
-      // setLoading(false)
+      setLoading(false)
       // setSuggestions([])
     }
+  }, [query, setLoading, setSearchResults])
 
-    // if (open) {
-    //   document.addEventListener('mousedown', handleClickOutside)
-    // } else {
-    //   document.removeEventListener('mousedown', handleClickOutside)
-    // }
-    // return () => {
-    //   document.removeEventListener('mousedown', handleClickOutside)
-    // }
-  }, [])
-
-  const onSubmit = (submittedData, e) => {
-    console.log(submittedData)
-    // const { fulltext } = submittedData
-    // setSearchQuery(fulltext)
-    // navigate(`/recipes?fulltext=${encodeURIComponent(fulltext)}`)
-    // setSuggestions([])
-  }
-  const onReset = (e, data, setValue) => {
-    e.preventDefault()
-    setValue('fulltext', '')
-    // setSearchQuery('')
-    // setSearchResults([])
-    setSuggestions([])
-    navigate(`/recipes`)
-  }
+  // const onSubmit = (submittedData, e) => {
+  //   console.log(submittedData)
+  //   // const { fulltext } = submittedData
+  //   // setSearchQuery(fulltext)
+  //   // navigate(`/recipes?fulltext=${encodeURIComponent(fulltext)}`)
+  //   // setSuggestions([])
+  // }
+  // const onReset = (e, data, setValue) => {
+  //   e.preventDefault()
+  //   setValue('fulltext', '')
+  //   // setSearchQuery('')
+  //   // setSearchResults([])
+  //   // setSuggestions([])
+  //   navigate(`/recipes`)
+  // }
 
   // const searchQuery = 'temp'
   return (
@@ -142,7 +140,8 @@ const Page = props => {
           ))}
 
         <Box width={[1]}>
-          <RecipeSearchForm
+          <ControlledForm />
+          {/* <RecipeSearchForm
             viewport={viewport}
             location={location}
             button
@@ -159,12 +158,12 @@ const Page = props => {
             setSearchResults={setSearchResults}
             suggestions={suggestions}
             setSuggestions={setSuggestions}
-          />
+          /> */}
         </Box>
       </Flex>
       <RecipeTeasersList
         viewport={viewport}
-        teasers={teasers}
+        // teasers={teasers}
         searchQuery={searchQuery}
         searchResults={searchResults}
       />
