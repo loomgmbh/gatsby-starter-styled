@@ -30,6 +30,7 @@ const space = [
 space.unit = {
   base: space[2],
   small: space[1],
+  margin: space[3],
   large: space[4],
   border: {
     default: 12,

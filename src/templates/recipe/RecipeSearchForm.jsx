@@ -1,245 +1,183 @@
-import React, { useEffect, useState, useRef } from 'react'
-import { navigate } from 'gatsby'
-import PropTypes from 'prop-types'
-import debounce from 'lodash.debounce'
+import React, { useState } from 'react'
 import { useForm, Controller } from 'react-hook-form'
-import qs from 'query-string'
-import DOMPurify from 'dompurify'
-import { Box, Flex, Input, Button, Text } from '@base'
-import { RadioGroup, FormControlLabel, Radio } from '@material-ui/core'
-import { themeGet } from '@style'
-import SyncLoader from 'react-spinners/SyncLoader'
-import { v4 as uuidv4 } from 'uuid'
-import { formatNodes } from '@templates/recipe/mixins.js'
-import useDebounce from '@util/useDebounce'
-import Autosuggester from '@components/form/SearchBar/Autosuggester'
+import { Flex, Box, Text } from '@base'
+import ExpansionPanel from '@material-ui/core/ExpansionPanel'
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
+import ChevronLeft from '@components/icons/ChevronLeft'
+
+import styled, { themeGet, layout, space } from '@style'
+// import ReactSelect from 'react-select'
+import {
+  TextField,
+  Checkbox,
+  Select,
+  MenuItem,
+  Switch,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+  Slider,
+} from '@material-ui/core'
+
+import MuiAutoComplete from './MuiAutoComplete'
+
+import ButtonsResult from './ButtonsResult'
 
 const defaultValues = {
-  fulltext: '',
-  DifficultyRadio: '',
-  TimeRadio: '',
+  Native: '',
+  TextField: '',
+  Select: '',
+  // ReactSelect: { value: 'vanilla', label: 'Vanilla' },
+  Checkbox: false,
+  switch: false,
+  country: null,
+  RadioGroup: '',
 }
 
-const RecipeSearchForm = ({
-  viewport,
-  location,
-  queryParams,
-  setSearchResults,
-  children,
-}) => {
-  const node = useRef()
-  const getUrlParameters = location => {
-    return qs.parse(location.search)
-  }
-  // const [queryParams, setQueryParams] = useState(getUrlParameters(location))
-  // const [query, setQuery] = useState(queryParams.fulltext)
-  // const [dropdown, setDropdown] = useState(false)
-  const { fulltext, difficulty, time } = queryParams
-  const [suggestions, setSuggestions] = useState([])
+const ControlledForm = props => {
+  const { handleSubmit, reset, control, errors } = useForm({
+    defaultValues,
+  })
+  const [data, setData] = useState(null)
 
-  // const cachedResults = localStorage.getItem(searchQuery)
-  // const searchValues = JSON.parse(localStorage.getItem('searchValues'))
-  // const { fulltext, difficulty, time } = searchValues
+  console.log('errors', errors)
 
-  const handleClickOutside = e => {
-    console.log('clicking anywhere')
-    if (node.current.contains(e.target)) {
-      console.log('// inside click')
-      return
-    }
-    console.log('// outside click')
-    // outside click
-    setDropdown(false)
-  }
+  const FormField = styled(Box)`
+    // margin-bottom: ${themeGet('space.unit.margin', '20px')};
 
-  const { handleSubmit, register, reset, control } = useForm({ defaultValues })
-
-  const getValidated = values => {
-    const obj = {}
-    Object.keys(values).map((key, value) => {
-      const item = values[key]
-      if (item.length > 0) {
-        obj[key] = item
-      }
-      return obj
-    })
-    return obj
-  }
-
-  const buildNewQueryString = values => {
-    let q = `?`
-    const { length } = Object.keys(values)
-    let count = 1
-    Object.keys(values).map((key, value) => {
-      const item = values[key]
-      const str = `${key}=${item}`
-      q = q.concat(str)
-      if (count < length) {
-        q = q.concat('&')
-      }
-      count += 1
-      return q
-    })
-    return q
-  }
-
-  const onSubmit = (submittedData, e) => {
-    // localStorage.setItem('searchValues', JSON.stringify(submittedData))
-    // const { difficulty, time } = submittedData
-    console.log(submittedData)
-    // const submittedValues = getValidated(submittedData)
-    // setQueryParams(submittedValues)
-    // navigate(`/recipes${buildNewQueryString(submittedValues)}`)
-    // setSearchQuery(fulltext)
-    // setSuggestions([])
-  }
-
-  const onReset = () => {
-    localStorage.setItem('searchValues', '')
-    // setSearchQuery('')
-  }
-
-  const handleChange = e => {
-    // e.persist()
-    const { name } = e.target
-    const { value } = e.target
-    console.log(name, value)
-    // const d = debounce(() => {
-    // setLoading(true)
-    // const { value } = e.target
-    // setQuery(DOMPurify.sanitize(e.target.value))
-    onSubmit({ fulltext: value })
-    // }, 300)
-    // d()
-  }
-
-  const [formData, setFormData] = useState(null)
-
-  const [autoQuery, setAutoQuery] = useState('')
-
-  const arrayDifficulty = ['easy', 'medium', 'hard']
-  const arrayTime = ['short', 'long']
-
-  function jsUcfirst(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1)
-  }
+  `
 
   return (
-    <form
-      role="search"
-      method="GET"
-      onSubmit={handleSubmit(data => {
-        // setFormData(data)
-        console.log(data)
-      })}
-      id="recipe-search-form"
-    >
-      <Flex>
-        <Box width={['50%']}>
-          {children || <label htmlFor="search-input">{children}</label>}
-          <Flex as="section" mr={[2]} css="position: relative;">
-            <Input
-              type="search"
-              id="search-input"
-              name="text"
-              aria-controls="search-results-count"
-              placeholder="Enter a search query"
-              ref={register}
-              defaultValue={fulltext}
-              autoComplete="off"
-              onChange={e => {
-                // handleChange(e)
-                // setQuery(e.target.value)
-                // console.log(e.target.value)
-                // onChange(e, data)
-              }}
-              mr={[2]}
-            />
-            {/* <Box ref={node}>
-          <Autosuggester
-            suggestions={suggestions}
-            open={suggestions.length > 0}
-            viewport={viewport}
-            setSuggestions={setSuggestions}
-          />
-        </Box> */}
-            <Input
-              name="submit"
-              ref={register}
-              type="submit"
-              id="submit"
-              defaultValue="Submit"
-              mr={[2]}
-              onClick={handleSubmit(onSubmit())}
-            />
-            <Input
-              type="reset"
-              defaultValue="Reset"
-              onClick={e => {
-                reset(defaultValues) // Not working :/
-                navigate('/recipes')
-              }}
-            />
-          </Flex>
-        </Box>
-        <Flex
-          width={['50%']}
-          className="search-filters"
-          mt={[2]}
-          css={`
-            button + button {
-              margin-left: ${themeGet('space.unit.base', '23px')};
-            }
-          `}
+    <form onSubmit={handleSubmit(data => setData(data))} className="form">
+      <Box
+        className="form-container"
+        css={`
+          section + section {
+            margin-top: ${themeGet('space.unit.large', '20px')};
+          }
+        `}
+      >
+        <FormField
+          as="section"
+          className="search-form-field search-form-field__text-search"
+          width={[1, null, 1 / 2]}
         >
-          <Box width={['50%']} as="section">
-            <Controller
-              as={
-                <RadioGroup
-                  aria-label="cooking-difficulty"
-                  name="difficulty"
-                  id="difficulty"
-                >
-                  <FormControlLabel
-                    value="easy"
-                    control={<Radio />}
-                    label="Easy Peasy"
-                  />
-                  <FormControlLabel
-                    value="hard"
-                    control={<Radio />}
-                    label="Gourmet style"
-                  />
-                </RadioGroup>
-              }
-              name="DifficultyRadio"
-              control={control}
-            />
-          </Box>
-          <Box width={['50%']} as="section">
-            <Controller
-              as={
-                <RadioGroup aria-label="cooking-time" name="time" id="time">
-                  <FormControlLabel
-                    value="short"
-                    control={<Radio />}
-                    label="< 30 mins"
-                  />
-                  <FormControlLabel
-                    value="long"
-                    control={<Radio />}
-                    label="> 30 mins"
-                  />
-                </RadioGroup>
-              }
-              name="TimeRadio"
-              control={control}
-            />
-          </Box>
-        </Flex>
-      </Flex>
+          <Controller
+            as={TextField}
+            name="text"
+            control={control}
+            placeholder="Enter your search"
+            fullWidth
+          />
+        </FormField>
+        <FormField
+          as="section"
+          className="search-form-field search-form-field__difficulty"
+          width={[1, null, 1 / 2]}
+        >
+          <Text as="label">Cooking time</Text>
+          <Controller
+            name="difficulty"
+            control={control}
+            defaultValue={[10, 60]}
+            onChange={([, value]) => value}
+            as={
+              <Slider
+                valueLabelDisplay="auto"
+                max={60}
+                min={10}
+                step={10}
+                marks
+              />
+            }
+          />
+        </FormField>
+
+        <section>
+          <label>MUI Select</label>
+          <Controller
+            as={
+              <Select>
+                <MenuItem value={10}>Ten</MenuItem>
+                <MenuItem value={20}>Twenty</MenuItem>
+                <MenuItem value={30}>Thirty</MenuItem>
+              </Select>
+            }
+            name="Select"
+            control={control}
+          />
+        </section>
+        <ButtonsResult {...{ data, reset, defaultValues }} />
+      </Box>
+
+      <ExpansionPanel>
+        <ExpansionPanelSummary
+          expandIcon={
+            <ChevronLeft maxWidth="15px" styles="transform: rotate(-90deg);" />
+          }
+          aria-controls="panel1a-content"
+          id="panel1a-header"
+        >
+          <Text as="p">Advanced controls</Text>
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails>
+          <Flex flexWrap="wrap">
+            <Box as="section" width={['50%']} mb={[4]}>
+              <label>MUI Switch</label>
+              <Controller
+                as={Switch}
+                type="checkbox"
+                name="switch"
+                control={control}
+              />
+            </Box>
+            <Box as="section" width={['50%']} mb={[4]}>
+              <label>MUI autocomplete</label>
+              <MuiAutoComplete control={control} />
+            </Box>
+            <Box as="section" width={['50%']} mb={[4]}>
+              <label>MUI Checkbox</label>
+              <Controller
+                as={Checkbox}
+                name="Checkbox"
+                type="checkbox"
+                control={control}
+                rules={{ required: true }}
+              />
+            </Box>
+            <Box as="section" width={['50%']} mb={[4]}>
+              <label>Radio Group</label>
+              <Controller
+                as={
+                  <RadioGroup aria-label="gender">
+                    <FormControlLabel
+                      value="female"
+                      control={<Radio />}
+                      label="Female"
+                    />
+                    <FormControlLabel
+                      value="male"
+                      control={<Radio />}
+                      label="Male"
+                    />
+                  </RadioGroup>
+                }
+                name="RadioGroup"
+                control={control}
+              />
+            </Box>
+          </Flex>
+        </ExpansionPanelDetails>
+      </ExpansionPanel>
     </form>
   )
 }
 
-export default RecipeSearchForm
+export default ControlledForm
+
+const options = [
+  { value: 'chocolate', label: 'Chocolate' },
+  { value: 'strawberry', label: 'Strawberry' },
+  { value: 'vanilla', label: 'Vanilla' },
+]

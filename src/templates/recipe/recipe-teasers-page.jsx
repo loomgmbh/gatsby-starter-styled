@@ -25,8 +25,6 @@ import {
   getTag,
   hasResults,
 } from '@templates/recipe/mixins'
-import ControlledForm from './ControlledForm'
-
 import RecipeSearchForm from './RecipeSearchForm'
 import '@style/forms.scss'
 
@@ -36,7 +34,9 @@ const getUrlParameters = location => {
   return qs.parse(location.search || '')
 }
 
+let renderCount = 0
 const Page = props => {
+  renderCount += 1
   const { data, pageContext, location } = props
   const [query, setQuery] = useQueryString(location, navigate)
   // const [queryParams, setQueryParams] = useState(getUrlParameters(location))
@@ -109,9 +109,38 @@ const Page = props => {
       footer
     >
       <Flex className="teasers-list-header" flexWrap="wrap" p={[null, 2]}>
-        <Text as="h2" pb="2" mr={[3]}>
-          Recipes
-        </Text>
+        <Box
+          as="div"
+          width={[1]}
+          css={`
+            display: grid;
+          `}
+          mb={[2]}
+        >
+          <Box
+            css={`
+              grid-column: 1;
+            `}
+          >
+            <Text as="h2">Recipes</Text>
+          </Box>
+          <Box
+            css={`
+              grid-column: 2;
+            `}
+          >
+            <Text
+              as="h4"
+              css={`
+                text-align: right;
+                line-height: 1.70821rem;
+                vertical-align: middle;
+              `}
+            >
+              Render Count: {renderCount}
+            </Text>
+          </Box>
+        </Box>
         {/* <SyncLoader
           loading={loading === false ? null : true}
           color={[theme.colorSchemes[viewport].highlight]}
@@ -140,7 +169,7 @@ const Page = props => {
           ))}
 
         <Box width={[1]}>
-          <ControlledForm />
+          <RecipeSearchForm />
           {/* <RecipeSearchForm
             viewport={viewport}
             location={location}
